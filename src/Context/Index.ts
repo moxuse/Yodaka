@@ -1,7 +1,9 @@
-import { YNode, Port } from "../Types";
+import { YNode, Port } from "../../../Types";
+
 import TorusMesh from "./Nodes/Mesh/TorusMsh";
 import SphereMesh from "./Nodes/Mesh/SphereMesh";
-import { Object3D } from "three";
+import PlaneMesh from "./Nodes/Mesh/PlaneMesh";
+import { Object3D, Mesh, Texture, WebGLRenderTarget } from "three";
 
 export default function(port: Port) {
   const throughput = (input: string) => {
@@ -29,8 +31,14 @@ export default function(port: Port) {
     }
   };
 
+  const render = (input: Texture): Texture => {
+    const renderTarget = new WebGLRenderTarget(512, 512, {});
+    return renderTarget;
+  };
+
   const torus = TorusMesh();
   const sphere = SphereMesh();
+  const plane = PlaneMesh();
 
-  return { remove, add, throughput, torus, sphere };
+  return { remove, add, throughput, torus, sphere, plane, render };
 }
