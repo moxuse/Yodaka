@@ -1,0 +1,11 @@
+{
+  "name": "Yodaka",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:moxuse/Yodaka.git",
+  "author": "moxuse <moxuse@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "prelude-ls": "https://github.com/gkz/prelude-ls.git"
+  }
+}

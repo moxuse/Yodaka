@@ -3,9 +3,23 @@ import { YNode, Port } from "../../../Types";
 import TorusMesh from "./Nodes/Mesh/TorusMsh";
 import SphereMesh from "./Nodes/Mesh/SphereMesh";
 import PlaneMesh from "./Nodes/Mesh/PlaneMesh";
-import { Object3D, Mesh, Texture, WebGLRenderTarget } from "three";
+
+import RenderTarget from "./Nodes/RenderTarget";
+
+import { Object3D, Texture } from "three";
+
+import prelude from "prelude-ls";
+import { DEFAULT_ENCODING } from "crypto";
 
 export default function(port: Port) {
+  //   const defaultImg: HTMLImageElement = document.getElementById(
+  //     "default_texture"
+  //   ) as HTMLImageElement;
+  //   let defaultTexture;
+  //   defaultImg.onload = () => {
+  //     defaultTexture = new Texture(defaultImg);
+  //   };
+
   const throughput = (input: string) => {
     console.log("context is:", port);
   };
@@ -31,9 +45,8 @@ export default function(port: Port) {
     }
   };
 
-  const render = (input: Texture): Texture => {
-    const renderTarget = new WebGLRenderTarget(512, 512, {});
-    return renderTarget;
+  const render = (input: Texture, inserttion: Object3D) => {
+    RenderTarget(input, port, inserttion);
   };
 
   const torus = TorusMesh();
