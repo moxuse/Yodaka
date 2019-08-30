@@ -5,7 +5,20 @@ You can edit this file as you like.
 { name =
     "my-project"
 , dependencies =
-    [ "console", "effect", "prelude", "psci-support" ]
+    [ "arrays"
+    , "console"
+    , "effect"
+    , "foreign"
+    , "math"
+    , "prelude"
+    , "psci-support"
+    , "purescript-easy-ffi"
+    , "purescript-three"
+    , "refs"
+    , "transformers"
+    , "tuples"
+    , "web-dom"
+    ]
 , packages =
     ./packages.dhall
 , sources =
