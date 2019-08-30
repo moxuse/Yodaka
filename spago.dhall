@@ -9,6 +9,7 @@ You can edit this file as you like.
     , "console"
     , "effect"
     , "foreign"
+    , "halogen"
     , "math"
     , "prelude"
     , "psci-support"

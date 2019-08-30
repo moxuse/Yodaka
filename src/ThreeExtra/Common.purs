@@ -1,6 +1,6 @@
-module Common where
+module ThreeExtra.Common where
 
-import Prelude (class Show, Unit, bind, discard, map, negate, pure, show, ($), (-), (/), (<>))
+import Prelude (class Show, Unit, discard, bind, map, negate, pure, show, ($), (-), (/), (<>))
 import Effect (Effect)
 import Effect.Console (log)
 import Data.Array
@@ -116,8 +116,8 @@ setupCamera scene camera = do
   Scene.addObject scene camera
   Object3D.setPosition camera 0.0 0.0 500.0
 
-initContext :: Camera.CameraType -> Effect Context
-initContext cameraType = do
+initContext :: String -> Camera.CameraType -> Effect Context
+initContext idName cameraType = do
   window <- getWindow
   dims <- nodeDimensions window
   renderer <- Renderer.createWebGL { antialias: true }
@@ -126,7 +126,7 @@ initContext cameraType = do
   let
     ctx = context renderer scene camera
   Renderer.setSize renderer dims.width dims.height
-  Renderer.appendToDomByID renderer "container"
+  Renderer.appendToDomByID renderer idName
   addEventListener window "resize" $ onResize ctx
   pure ctx
 
