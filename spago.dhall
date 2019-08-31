@@ -10,6 +10,7 @@ You can edit this file as you like.
     , "effect"
     , "foreign"
     , "halogen"
+    , "integers"
     , "math"
     , "prelude"
     , "psci-support"

@@ -42,7 +42,7 @@ class RenderView {
     this.renderer = new WebGLRenderer({ canvas: canvas, context: context });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer = new WebGLRenderer({ canvas: canvas, context: context });
+
     el.appendChild(this.renderer.domElement);
 
     this.camera = new PerspectiveCamera(

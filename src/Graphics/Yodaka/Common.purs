@@ -1,17 +1,20 @@
 module Graphics.Yodaka.Common where
 
-import Prelude (Unit, bind, discard, map, negate, pure, ($), (-), (/))
+import Prelude (Unit, bind, discard, negate, pure, ($), (/), (-))
 import Effect (Effect)
-import Data.Array
 import Web.DOM.Node (Node)
+import Web.HTML (HTMLCanvasElement)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Renderer as Renderer
 import Graphics.Three.Camera as Camera
 import Graphics.Three.Object3D as Object3D
+import Graphics.Three.Light as Light
 import Graphics.Three.Util (ffi, fpi)
 
-data Context
-  = Context
+foreign import data WebGL2RenderingContext :: Type
+
+data MainContext
+  = MainContext
     { renderer :: Renderer.Renderer
     , scene :: Scene.Scene
     , camera :: Camera.CameraInstance
@@ -32,29 +35,13 @@ context ::
   Renderer.Renderer ->
   Scene.Scene ->
   Camera.CameraInstance ->
-  Context
+  MainContext
 context r s c =
-  Context
+  MainContext
     { renderer: r
     , scene: s
     , camera: c
     }
-
-newtype Pos
-  = Pos
-  { x :: Number
-  , y :: Number
-  }
-
-pos :: Number -> Number -> Pos
-pos x y =
-  Pos
-    { x: x
-    , y: y
-    }
-
-gridList :: forall a. Int -> Int -> (Int -> Int -> a) -> Array a
-gridList n m f = concatMap (\i -> map (\j -> f i j) (0 .. (m - 1))) (0 .. (n - 1))
 
 doAnimation :: Effect Unit -> Effect Unit
 doAnimation animate = do
@@ -72,14 +59,14 @@ updateCamera (Camera.OrthographicInstance camera) dims = do
     (dims.height / (-2.0)) --}
   Camera.updateProjectionMatrix camera
 
-renderContext :: Context -> Effect Unit
-renderContext (Context c) = do
+renderContext :: MainContext -> Effect Unit
+renderContext (MainContext c) = do
   case c.camera of
     Camera.PerspectiveInstance camera -> Renderer.render c.renderer c.scene camera
     Camera.OrthographicInstance camera -> Renderer.render c.renderer c.scene camera
 
-onResize :: Context -> Event -> Effect Unit
-onResize (Context c) _ = do
+onResize :: MainContext -> Event -> Effect Unit
+onResize (MainContext c) _ = do
   window <- getWindow
   dims <- nodeDimensions window
   updateCamera c.camera dims
@@ -87,7 +74,7 @@ onResize (Context c) _ = do
 
 createCameraInsance :: Camera.CameraType -> Scene.Scene -> Dimensions -> Effect Camera.CameraInstance
 createCameraInsance Camera.Perspective scene dims = do
-  camera <- Camera.createPerspective 45.0 (dims.width / dims.height) 1.0 1000.0
+  camera <- Camera.createPerspective 45.0 (dims.width / dims.height) 0.1 1000.0
   setupCamera scene camera
   pure $ Camera.PerspectiveInstance camera
 
@@ -104,13 +91,29 @@ createCameraInsance Camera.Orthographic scene dims = do
 setupCamera :: forall a. Object3D.Object3D a => Camera.Camera a => Scene.Scene -> a -> Effect Unit
 setupCamera scene camera = do
   Scene.addObject scene camera
-  Object3D.setPosition camera 0.0 0.0 500.0
+  Object3D.setPosition camera 0.0 0.0 10.0
 
-initContext :: String -> Camera.CameraType -> Effect Context
+initLights :: MainContext -> Effect Unit
+initLights (MainContext c) = do
+  ambiLight <- Light.createAmbientLight 0x2e9992
+  Scene.addObject c.scene ambiLight
+  pointLightA <- Light.createPointLight 0xffffff
+  pointLightB <- Light.createPointLight 0xffffff
+  pointLightC <- Light.createPointLight 0xffffff
+  Object3D.setPosition pointLightA 0.0 200.0 0.0
+  Object3D.setPosition pointLightB 100.0 200.0 100.0
+  Object3D.setPosition pointLightC (-100.0) 200.0 (-100.0)
+  Scene.addObject c.scene pointLightA
+  Scene.addObject c.scene pointLightB
+  Scene.addObject c.scene pointLightC
+
+initContext :: String -> Camera.CameraType -> Effect MainContext
 initContext idName cameraType = do
   window <- getWindow
   dims <- nodeDimensions window
-  renderer <- Renderer.createWebGL { antialias: true }
+  ccanvas <- createCanvas
+  contextGL2 <- getWebGL2Context ccanvas
+  renderer <- Renderer.createWebGL { antialias: true, canvas: ccanvas, context: contextGL2 }
   scene <- Scene.create
   camera <- createCameraInsance cameraType scene dims
   let
@@ -120,6 +123,7 @@ initContext idName cameraType = do
   addEventListener window "resize" $ onResize ctx
   pure ctx
 
+--  Supprot functions
 unsafePrint :: forall a. a -> Effect Unit
 unsafePrint = fpi [ "a", "" ] "console.log(a)"
 
@@ -148,3 +152,9 @@ addEventListener =
 
 requestAnimationFrame :: Effect Unit -> Effect Unit
 requestAnimationFrame = fpi [ "callback", "" ] "window.requestAnimationFrame(callback)"
+
+createCanvas :: Effect HTMLCanvasElement
+createCanvas = ffi [ "" ] "document.createElement('canvas')"
+
+getWebGL2Context :: HTMLCanvasElement -> Effect WebGL2RenderingContext
+getWebGL2Context = ffi [ "canvas", "" ] "canvas.getContext('webgl2')"
