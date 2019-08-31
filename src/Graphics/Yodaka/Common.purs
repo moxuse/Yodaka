@@ -1,24 +1,14 @@
-module ThreeExtra.Common where
+module Graphics.Yodaka.Common where
 
-import Prelude (class Show, Unit, discard, bind, map, negate, pure, show, ($), (-), (/), (<>))
+import Prelude (Unit, bind, discard, map, negate, pure, ($), (-), (/))
 import Effect (Effect)
-import Effect.Console (log)
 import Data.Array
 import Web.DOM.Node (Node)
-import Data.Foreign.EasyFFI
-import Graphics.Three.Camera as Camera
-import Graphics.Three.Geometry as Geometry
-import Graphics.Three.Material as Material
-import Graphics.Three.Object3D as Object3D
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Renderer as Renderer
-import Graphics.Three.Material as Material
-import Graphics.Three.Geometry as Geometry
-import Graphics.Three.Scene as Scene
 import Graphics.Three.Camera as Camera
 import Graphics.Three.Object3D as Object3D
-import Graphics.Three.Util
-import Control.Monad.State.Trans
+import Graphics.Three.Util (ffi, fpi)
 
 data Context
   = Context

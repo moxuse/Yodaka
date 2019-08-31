@@ -1,15 +1,13 @@
 module Main where
 
-import ThreeExtra.Common
 import Prelude (Unit, discard, bind, ($))
 import Effect (Effect)
-import Effect.Console (log)
 import Graphics.Three.Camera as Camera
 import Graphics.Three.Geometry as Geometry
 import Graphics.Three.Material as Material
 import Graphics.Three.Object3D as Object3D
 import Graphics.Three.Scene as Scene
-import Halogen.HTML.Elements.Keyed (colgroup)
+import Graphics.Yodaka.Common
 
 rotateCube :: Context -> Object3D.Mesh -> Number -> Effect Unit
 rotateCube context mesh n = do
