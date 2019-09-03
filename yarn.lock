@@ -2,6 +2,3 @@
 # yarn lockfile v1
 
 
-"prelude-ls@https://github.com/gkz/prelude-ls.git":
-  version "1.1.2"
-  resolved "https://github.com/gkz/prelude-ls.git#c34e273fe9948f2880b065a9a22b1702663b4fe9"
