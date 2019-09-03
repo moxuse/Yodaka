@@ -14,6 +14,5 @@ type Port =
   -- , renderers :: Array TargetRenderer
   }
 
-
 gloabalPort :: Effect Port
 gloabalPort = unsafeForeignFunction [""] "window.port"
