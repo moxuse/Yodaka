@@ -2,16 +2,14 @@ module Graphics.Yodaka.Port where
 
 import Effect
 import Graphics.Three.Scene as Scene
+import Graphics.Yodaka.RenderTarget as R
 
 import Data.Foreign.EasyFFI (unsafeForeignFunction)
 
 
--- data TargetRenderer = TargetRenderer
---  {target:: WebGLRenderTarget, scene :: Scene }
-  
 type Port =
   { scene :: Scene.Scene
-  -- , renderers :: Array TargetRenderer
+  , renderers :: Array R.RendererTarget
   }
 
 gloabalPort :: Effect Port

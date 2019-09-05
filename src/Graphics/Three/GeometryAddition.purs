@@ -10,6 +10,8 @@ foreign import data Torus :: Type
 createTorusGeometry :: Number -> Number -> Number -> Number -> Effect G.Geometry
 createTorusGeometry = ffi [ "radius", "tube", "radialSegments", "tubularSegments", "" ] "new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments)"
 
-
 createSphereGeometry :: Number -> Number -> Number -> Effect G.Geometry
-createSphereGeometry = ffi ["radius", "widthSegments", "heightSegments", ""] "new THREE.SphereGeometry(radius, widthSegments, heightSegments)"
+createSphereGeometry = ffi [ "radius", "widthSegments", "heightSegments", "" ] "new THREE.SphereGeometry(radius, widthSegments, heightSegments)"
+
+createPlaneBufferGeometry :: Number -> Number -> Number -> Number -> Effect G.Geometry
+createPlaneBufferGeometry = ffi [ "width", "height", "widthSegments", "heightSegments", "" ] "new THREE.PlaneBufferGeometry(width, height, widthSegments, heightSegments)"
