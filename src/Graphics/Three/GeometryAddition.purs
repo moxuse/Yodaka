@@ -13,5 +13,5 @@ createTorusGeometry = ffi [ "radius", "tube", "radialSegments", "tubularSegments
 createSphereGeometry :: Number -> Number -> Number -> Effect G.Geometry
 createSphereGeometry = ffi [ "radius", "widthSegments", "heightSegments", "" ] "new THREE.SphereGeometry(radius, widthSegments, heightSegments)"
 
-createPlaneBufferGeometry :: Number -> Number -> Number -> Number -> Effect G.Geometry
+createPlaneBufferGeometry :: Number -> Number -> Int -> Int -> Effect G.Geometry
 createPlaneBufferGeometry = ffi [ "width", "height", "widthSegments", "heightSegments", "" ] "new THREE.PlaneBufferGeometry(width, height, widthSegments, heightSegments)"

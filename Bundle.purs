@@ -17,6 +17,8 @@ import Graphics.Yodaka.Port
 import Graphics.Yodaka.Port
 import Graphics.Yodaka.Node.Torus
 import Graphics.Yodaka.Node.Sphere
+import Graphics.Yodaka.Node.NoisePlane
+import Graphics.Yodaka.Node.NormalPlane
 import Graphics.Yodaka.Context (add)
 
 main :: Effect Unit
