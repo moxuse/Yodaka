@@ -18,22 +18,14 @@ initUniforms = {
 
 vertexShader :: String
 vertexShader = """
-  #ifdef GL_ES
-  precision highp float;
-  #endif
-
   void main() {
-    gl_Position = vec4(position, 1.0);
+    gl_Position = modelMatrix * vec4(position, 1.0);
   }
 """
 
 -- This shader from : https://nogson2.hatenablog.com/entry/2017/11/18/150645
 fragmentalShader :: String
 fragmentalShader = """
-  #ifdef GL_ES
-  precision highp float;
-  #endif
-
   uniform vec3 resolution;
 
   vec2 random(vec2 st) {

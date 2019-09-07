@@ -2,37 +2,46 @@ module Graphics.Yodaka.RenderTarget where
 
 import Prelude
 import Effect (Effect)
+import Effect.Unsafe (unsafePerformEffect)
 import Graphics.Three.WebGLRenderTarget as W
-import Graphics.Three.Camera as Camera
-import Graphics.Three.Object3D as Object3D
+import Graphics.Three.Object3D (class Object3D, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Geometry
+import Graphics.Three.Texture (class Texture, TargetTexture)
+import Graphics.Three.Util (ffi)
 
 newtype RendererTarget = RendererTarget
  { target :: W.WebGLRenderTarget, scene :: Scene.Scene }
 
-createRenderTarget :: Effect RendererTarget
-createRenderTarget = do
+textureSize = 512
+
+renderTarget :: Mesh -> Effect RendererTarget
+renderTarget overlap = do
   s <- Scene.create
   t <- defaultRendererTarget
-  pure $ RendererTarget { target : t, scene : s }
-  
+  Scene.addObject s overlap
+  let target = createRenderTarget t s
+  pure target
 
-createRendererTarget' ::
-  forall opt. {|opt} ->
+createRenderTarget :: W.WebGLRenderTarget -> Scene.Scene -> RendererTarget
+createRenderTarget t s = RendererTarget { target : t, scene : s }
+
+createWebRendererTarget ::
+  forall opt. { | opt } ->
   Effect W.WebGLRenderTarget
-createRendererTarget' opt = do
-  target <- W.createWeGLRenderer opt
+createWebRendererTarget opt = do
+  target <- W.createWeGLRenderer opt textureSize textureSize
   pure target
 
 defaultRendererTarget :: Effect W.WebGLRenderTarget
 defaultRendererTarget = do
-  c <- W.clampToEdgeWrapping
-  n <- W.nearestFilter
-  W.createWeGLRenderer {
-    depthBuffer: false :: Boolean,
-    stencilBuffer: false :: Boolean,
-    magFilter: c :: W.ClampToEdgeWrapping,
-    minFilter: c :: W.ClampToEdgeWrapping,
-    wrapS: n :: W.NearestFilter,
-    wrapT: n :: W.NearestFilter}
+  W.createWeGLRenderer {} textureSize textureSize
+
+
+getTexture :: RendererTarget -> Effect TargetTexture
+getTexture (RendererTarget t) = do
+  tex <- unsafeGetTexture t.target
+  pure tex
+
+unsafeGetTexture ::  W.WebGLRenderTarget -> Effect TargetTexture
+unsafeGetTexture = ffi [ "target", "" ] "target.texture"

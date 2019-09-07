@@ -17,6 +17,7 @@ You can edit this file as you like.
     , "psci-support"
     , "purescript-easy-ffi"
     , "purescript-three"
+    , "record"
     , "refs"
     , "transformers"
     , "tuples"
