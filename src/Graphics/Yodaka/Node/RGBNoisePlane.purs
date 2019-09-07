@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Node.NoisePlane where
+module Graphics.Yodaka.Node.RGBNoisePlane where
 
 import Prelude (bind)
 import Effect
@@ -51,14 +51,16 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 30.0);
-    color = vec3( noise(pos) * .5 + .5 );
+    vec2 posX= vec2(st * 10.0);
+    vec2 posY = vec2(st * 20.0);
+    vec2 posZ = vec2(st * 30.0);
+    color = vec3( noise(posX) * .85 + .15, noise(posY) * .85 + .15, noise(posZ) * .85 + .15 );
     gl_FragColor = vec4(color, 1.0);
   }
 """
 
-noisePlane :: Effect Mesh
-noisePlane = do
+rgbNoisePlane :: Effect Mesh
+rgbNoisePlane = do
   g <- createPlaneBufferGeometry 2.0 2.0 1 1
   m <- createShader 
     { uniforms : initUniforms

@@ -8,7 +8,7 @@ import Graphics.Three.MaterialAddition (createMeshStandard)
 import Graphics.Three.Object3D (Mesh, createMesh)
 
 
-torusDefaultOpt = { color : 0x2194ce, roughness: 0.17 }
+torusDefaultOpt = { color : 0x2194ce }
 
 sphere :: forall opt. { | opt } -> Effect Mesh
 sphere opt = do
