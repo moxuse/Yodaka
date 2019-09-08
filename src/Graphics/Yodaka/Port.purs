@@ -13,8 +13,11 @@ type Port =
   , targets :: Array R.RendererTarget
   }
 
-gloabalPort :: Effect Port
-gloabalPort = unsafeForeignFunction [""] "window.port"
+globalPort :: Effect Port
+globalPort = unsafeForeignFunction [""] "window.port"
 
-setGloalPort :: Port -> Effect Unit
-setGloalPort = unsafeForeignFunction ["port", ""] "window.port = port"
+setGlobalPort :: Port -> Effect Unit
+setGlobalPort = unsafeForeignFunction ["port", ""] "window.port = port"
+
+-- dispose :: Effect Unit
+-- dispose = do
