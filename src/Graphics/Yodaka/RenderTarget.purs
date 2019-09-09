@@ -1,11 +1,12 @@
 module Graphics.Yodaka.RenderTarget where
 
-import Prelude (bind, discard, pure)
+import Prelude (Unit, bind, discard, pure)
 import Effect (Effect)
 import Graphics.Three.WebGLRenderTarget as W
 import Graphics.Three.Object3D (Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
+import Graphics.Yodaka.CleanScene (cleanScene)
 import Graphics.Three.Util (ffi)
 
 newtype RendererTarget = RendererTarget
@@ -42,3 +43,4 @@ getTexture (RendererTarget t) = do
 
 unsafeGetTexture ::  W.WebGLRenderTarget -> Effect TargetTexture
 unsafeGetTexture = ffi [ "target", "" ] "target.texture"
+       

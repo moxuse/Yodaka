@@ -1,11 +1,14 @@
 module Graphics.Yodaka.Port where
 
-import Prelude (Unit)
+import Prelude (Unit, discard, bind)
+import Data.Functor (map)
 import Effect
 import Graphics.Three.Scene as Scene
 import Graphics.Yodaka.RenderTarget as R
+import Data.Traversable (traverse_)
+import Graphics.Yodaka.CleanScene (cleanScene)
 
-import Data.Foreign.EasyFFI (unsafeForeignFunction)
+import Data.Foreign.EasyFFI (unsafeForeignFunction, unsafeForeignProcedure)
 
 
 type Port =
@@ -16,8 +19,8 @@ type Port =
 globalPort :: Effect Port
 globalPort = unsafeForeignFunction [""] "window.port"
 
-setGlobalPort :: Port -> Effect Unit
-setGlobalPort = unsafeForeignFunction ["port", ""] "window.port = port"
+addTargetToPort :: R.RendererTarget -> Effect Unit
+addTargetToPort = unsafeForeignFunction ["target", ""] "window.port.targets.push(target)"
 
--- dispose :: Effect Unit
--- dispose = do
+-- setGlobalPort :: Port -> Effect Unit
+-- setGlobalPort = unsafeForeignProcedure ["port", ""] "window.port = port"
