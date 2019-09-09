@@ -6,7 +6,6 @@ import Effect
 import Graphics.Three.Scene as Scene
 import Graphics.Yodaka.RenderTarget as R
 import Data.Traversable (traverse_)
-import Graphics.Yodaka.CleanScene (cleanScene)
 
 import Data.Foreign.EasyFFI (unsafeForeignFunction, unsafeForeignProcedure)
 

@@ -6,7 +6,6 @@ import Graphics.Three.WebGLRenderTarget as W
 import Graphics.Three.Object3D (Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
-import Graphics.Yodaka.CleanScene (cleanScene)
 import Graphics.Three.Util (ffi)
 
 newtype RendererTarget = RendererTarget
