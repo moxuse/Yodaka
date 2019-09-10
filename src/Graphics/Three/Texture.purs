@@ -1,4 +1,7 @@
-module Graphics.Three.Texture where
+module Graphics.Three.Texture
+( class Texture
+, TargetTexture
+) where
 
 import Prelude (Unit)
 import Effect (Effect)

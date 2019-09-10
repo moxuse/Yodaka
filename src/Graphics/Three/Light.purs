@@ -1,4 +1,12 @@
-module Graphics.Three.Light where
+module Graphics.Three.Light 
+( class Light
+, AmbientLight
+, PointLight
+, DirectionalLight
+, createAmbientLight
+, createPointLight
+, createDirectionalLight
+) where
 
 import Prelude (Unit)
 import Data.Int

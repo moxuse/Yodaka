@@ -1,4 +1,10 @@
-module Graphics.Three.Group where
+module Graphics.Three.Group
+( class Group
+, Object3DGroup
+, create
+, addObject
+, rotateIncrement
+) where
 
 import Prelude (Unit)
 import Data.Int

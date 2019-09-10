@@ -1,4 +1,11 @@
-module Graphics.Three.WebGLRenderTarget where
+module Graphics.Three.WebGLRenderTarget
+( WebGLRenderTarget
+, NearestFilter
+, ClampToEdgeWrapping
+, createWeGLRenderer
+, clampToEdgeWrapping
+, nearestFilter
+) where
 
 import Prelude (Unit)
 import Effect (Effect)

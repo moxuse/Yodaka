@@ -1,20 +1,23 @@
-module Graphics.Yodaka.Node.NormalPlane where
+module Graphics.Yodaka.Node.NormalPlane
+( normalPlane
+)  where
 
-import Prelude (bind)
+import Prelude (bind, (>>>))
 import Effect
+import Record.Builder (build, insert)
+import Data.Symbol (SProxy(..))
 import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
+import Graphics.Yodaka.Shader (uniformVec3)
 
 resolution = 512.0
 
-initUniforms :: { resolution :: { "type" :: String, value :: Vector.Vector3 } }
-initUniforms = {
-  resolution : {
-    "type" : "v3"
-    , value : Vector.createVec3 resolution resolution 0.0 }
-  }
+initUniforms = uniformVec3 
+  (SProxy :: SProxy "resolution")
+  (Vector.createVec3 resolution resolution 0.0)
+  {}
 
 vertexShader :: String
 vertexShader = """

@@ -143,6 +143,16 @@ let additions =
         , version =
             "v2.1.0"
         }
+    , purescript-mochi = 
+        { dependencies =
+            [ "typelevel-prelude"
+            , "foreign-object"
+            ]
+        , repo = 
+            "https://github.com/justinwoo/purescript-mochi.git"
+        , version =
+            "v0.1.0"
+        }
     }
 
 in  upstream // overrides // additions

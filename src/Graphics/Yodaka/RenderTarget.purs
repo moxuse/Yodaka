@@ -1,4 +1,8 @@
-module Graphics.Yodaka.RenderTarget where
+module Graphics.Yodaka.RenderTarget
+( RendererTarget
+, renderTarget
+, getTexture
+) where
 
 import Prelude (Unit, bind, discard, pure)
 import Effect (Effect)

@@ -1,4 +1,8 @@
-module Graphics.Yodaka.Port where
+module Graphics.Yodaka.Port
+( Port
+, globalPort
+, addTargetToPort
+) where
 
 import Prelude (Unit, discard, bind)
 import Data.Functor (map)

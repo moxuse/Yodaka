@@ -1,4 +1,7 @@
-module Graphics.Three.MaterialAddition where
+module Graphics.Three.MaterialAddition
+( MeshStandard
+, createMeshStandard
+) where
 
 import Prelude (Unit)
 import Effect (Effect)

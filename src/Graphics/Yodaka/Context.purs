@@ -1,4 +1,7 @@
-module Graphics.Yodaka.Context where
+module Graphics.Yodaka.Context
+( add
+, render
+) where
 
 import Prelude (Unit, bind, discard, pure, ($))
 import Effect (Effect)
@@ -23,6 +26,3 @@ render obj = do
   addTargetToPort target
   tex <- RT.getTexture target
   pure tex
-    where 
-      setTargets :: Array RT.RendererTarget -> Port -> Port
-      setTargets tr p = p { targets = tr }    

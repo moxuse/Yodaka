@@ -1,4 +1,8 @@
-module Graphics.Three.GeometryAddition where
+module Graphics.Three.GeometryAddition 
+( createTorusGeometry
+, createSphereGeometry
+, createPlaneBufferGeometry
+) where
 
 import Prelude (Unit)
 import Effect

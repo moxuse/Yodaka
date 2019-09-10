@@ -1,4 +1,6 @@
-module Graphics.Yodaka.Node.Torus where
+module Graphics.Yodaka.Node.Torus
+( torus
+) where
 
 import Prelude (bind)
 import Effect
