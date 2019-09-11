@@ -1,47 +1,48 @@
-module Graphics.Yodaka.Node.NormalPlane
-( normalPlane
+module Graphics.Yodaka.Node.MapPlane
+( mapPlane
 )  where
 
-import Prelude (bind, (>>>))
+import Prelude (bind)
 import Effect
-import Record.Builder (build, insert)
 import Data.Symbol (SProxy(..))
 import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
+import Graphics.Three.Texture (class Texture)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3)
+import Graphics.Yodaka.Shader (uniformVec3, uniformSampler2D)
 
+resolution :: Number
 resolution = 512.0
-
-initUniforms = uniformVec3 
-  (SProxy :: SProxy "resolution")
-  (Vector.createVec3 resolution resolution 0.0)
-  {}
 
 vertexShader :: String
 vertexShader = """
+  varying vec2 vUv;
   void main() {
+    vUv = uv;
     gl_Position = modelMatrix * vec4(position, 1.0);
   }
 """
 
--- This shader from : https://nogson2.hatenablog.com/entry/2017/11/18/150645
 fragmentalShader :: String
 fragmentalShader = """
   uniform vec3 resolution;
+  varying vec2 vUv;
+  uniform sampler2D mapTexture;
 
   void main() {
-    vec2 col = gl_FragCoord.xy / resolution.xy / 4.0;
-    gl_FragColor = vec4(vec3(col, 1.0), 1.0);
+    gl_FragColor = texture2D(mapTexture , vUv);
   }
 """
 
-normalPlane :: Effect Mesh
-normalPlane = do
+mapPlane :: forall t. Texture t => t -> Effect Mesh
+mapPlane tex = do
+  let u = {}
+  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
   g <- createPlaneBufferGeometry 2.0 2.0 1 1
   m <- createShader 
-    { uniforms : initUniforms
+    { uniforms : u2
     , vertexShader : vertexShader
     , fragmentShader : fragmentalShader  }
   createMesh g m

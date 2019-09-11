@@ -10,7 +10,6 @@ import Graphics.Three.GeometryAddition (createSphereGeometry)
 import Graphics.Three.MaterialAddition (createMeshStandard)
 import Graphics.Three.Object3D (Mesh, createMesh)
 
-
 sphereDefaultOpt = { color : 0x2194ce }
 
 sphere :: forall opt. { | opt } -> Effect Mesh

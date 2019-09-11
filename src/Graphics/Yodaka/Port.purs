@@ -13,7 +13,6 @@ import Data.Traversable (traverse_)
 
 import Data.Foreign.EasyFFI (unsafeForeignFunction, unsafeForeignProcedure)
 
-
 type Port =
   { scene :: Scene.Scene
   , targets :: Array R.RendererTarget

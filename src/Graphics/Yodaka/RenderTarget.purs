@@ -7,21 +7,24 @@ module Graphics.Yodaka.RenderTarget
 import Prelude (Unit, bind, discard, pure)
 import Effect (Effect)
 import Graphics.Three.WebGLRenderTarget as W
-import Graphics.Three.Object3D (Mesh)
+import Graphics.Three.Object3D (class Renderable, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
-import Graphics.Three.Util (ffi)
+import Graphics.Three.Util (ffi, fpi)
 
 newtype RendererTarget = RendererTarget
  { target :: W.WebGLRenderTarget, scene :: Scene.Scene }
 
 textureSize = 512
 
-renderTarget :: Mesh -> Effect RendererTarget
+addObject :: forall a. Renderable a => Scene.Scene -> a -> Effect Unit
+addObject = fpi ["scene", "a", ""] "scene.add(a)"
+
+renderTarget :: forall r. Renderable r => r -> Effect RendererTarget
 renderTarget overlap = do
   s <- Scene.create
   t <- defaultRendererTarget
-  Scene.addObject s overlap
+  addObject s overlap
   let target = createRenderTarget t s
   pure target
 
@@ -37,7 +40,6 @@ createWebRenderTarget opt = do
 defaultRendererTarget :: Effect W.WebGLRenderTarget
 defaultRendererTarget = do
   W.createWeGLRenderer {} textureSize textureSize
-
 
 getTexture :: RendererTarget -> Effect TargetTexture
 getTexture (RendererTarget t) = do

@@ -12,6 +12,7 @@ You can edit this file as you like.
     , "foreign"
     , "halogen"
     , "integers"
+    , "lists"
     , "math"
     , "prelude"
     , "proxy"
@@ -23,6 +24,7 @@ You can edit this file as you like.
     , "refs"
     , "transformers"
     , "tuples"
+    , "typelevel-prelude"
     , "web-dom"
     ]
 , packages =
