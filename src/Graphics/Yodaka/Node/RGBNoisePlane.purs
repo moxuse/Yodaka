@@ -9,14 +9,14 @@ import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3)
+import Graphics.Yodaka.Shader (uniformVec3, uniformFloat)
 
 resolution = 512.0
 
-initUniforms = uniformVec3 
-  (SProxy :: SProxy "resolution")
-  (Vector.createVec3 resolution resolution 0.0)
-  {}
+initUniforms = do
+  let u = {}
+  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  uniformFloat (SProxy :: SProxy "time") 0.0 u1
 
 vertexShader :: String
 vertexShader = """
@@ -29,6 +29,7 @@ vertexShader = """
 fragmentalShader :: String
 fragmentalShader = """
   uniform vec3 resolution;
+  uniform float time;
 
   vec2 random(vec2 st) {
     st = vec2( dot(st, vec2(127.1, 311.7)),
@@ -53,9 +54,9 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 posX= vec2(st * 10.0);
-    vec2 posY = vec2(st * 20.0);
-    vec2 posZ = vec2(st * 30.0);
+    vec2 posX= vec2(st * 10.0) + sin(time * 0.0008) * 4.0;
+    vec2 posY = vec2(st * 20.0) + sin(time * 0.0008) * 4.0;
+    vec2 posZ = vec2(st * 30.0) + sin(time * 0.0008) * 4.0;
     color = vec3( noise(posX) * .85 + .15, noise(posY) * .85 + .15, noise(posZ) * .85 + .15 );
     gl_FragColor = vec4(color, 1.0);
   }
