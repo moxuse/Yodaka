@@ -3,7 +3,8 @@ module Main where
 import Prelude
 
 import Effect (Effect)
-import Effect.Class.Console (log)
+import Effect.Console (log)
+import Data.Number.Format (precision, toString, toStringWith)
 import Graphics.Three.Camera as Camera
 import Graphics.Three.Geometry as Geometry
 import Graphics.Three.Material as Material
@@ -19,6 +20,8 @@ import Graphics.Yodaka.Node.MapPlane
 import Graphics.Yodaka.Node.NoisePlane
 import Graphics.Yodaka.Node.NormalPlane
 import Graphics.Yodaka.Node.RGBNoisePlane
+import Graphics.Yodaka.IO.Timer
+import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
 import Graphics.Yodaka.Context (add, render)
 
