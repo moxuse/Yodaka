@@ -14,6 +14,6 @@ torusDefaultOpt = { color : 0x2194ce }
 torus :: forall opt. { | opt } -> Effect Mesh
 torus opt = do
   let u = unsafeUnion opt torusDefaultOpt
-  g <- createTorusGeometry 1.0 0.5 128.0 128.0
+  g <- createTorusGeometry 1.0 0.5 64.0 128.0
   m <- createMeshStandard u
   createMesh g m

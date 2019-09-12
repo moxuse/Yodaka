@@ -15,6 +15,6 @@ sphereDefaultOpt = { color : 0x2194ce }
 sphere :: forall opt. { | opt } -> Effect Mesh
 sphere opt = do
   let u = unsafeUnion opt sphereDefaultOpt
-  g <- createSphereGeometry 1.0 512.0 512.0
+  g <- createSphereGeometry 1.0 64.0 64.0
   m <- createMeshStandard u
   createMesh g m
