@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Node.NormalPlane
+module Graphics.Yodaka.Renderable.Plane.Normal
 ( normalPlane
 )  where
 
@@ -10,7 +10,7 @@ import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3)
+import Graphics.Yodaka.Renderable.Util (uniformVec3)
 
 resolution = 512.0
 

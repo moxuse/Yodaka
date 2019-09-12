@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Shader
+module Graphics.Yodaka.Renderable.Util
 ( uniformInt
 , uniformFloat
 , uniformVec3

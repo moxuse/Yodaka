@@ -1,15 +1,15 @@
-module Graphics.Yodaka.Node.NoisePlane
-( noisePlane
+module Graphics.Yodaka.Renderable.Plane.RGBNoise
+( rgbNoisePlane
 ) where
 
-import Prelude (bind, discard, pure)
+import Prelude (bind)
 import Effect
 import Data.Symbol (SProxy(..))
 import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3, uniformFloat)
+import Graphics.Yodaka.Renderable.Util (uniformVec3, uniformFloat)
 
 resolution = 512.0
 
@@ -54,14 +54,16 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 30.0 + sin(time * 0.0008) * 4.0);
-    color = vec3( noise(pos) * .5 + .5 );
+    vec2 posX= vec2(st * 10.0) + sin(time * 0.0008) * 4.0;
+    vec2 posY = vec2(st * 20.0) + sin(time * 0.0008) * 4.0;
+    vec2 posZ = vec2(st * 30.0) + sin(time * 0.0008) * 4.0;
+    color = vec3( noise(posX) * .85 + .15, noise(posY) * .85 + .15, noise(posZ) * .85 + .15 );
     gl_FragColor = vec4(color, 1.0);
   }
 """
 
-noisePlane :: Effect Mesh
-noisePlane = do
+rgbNoisePlane :: Effect Mesh
+rgbNoisePlane = do
   g <- createPlaneBufferGeometry 2.0 2.0 1 1
   m <- createShader 
     { uniforms : initUniforms

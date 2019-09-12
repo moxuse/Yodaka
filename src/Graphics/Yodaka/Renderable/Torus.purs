@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Node.Torus
+module Graphics.Yodaka.Renderable.Torus
 ( torus
 ) where
 

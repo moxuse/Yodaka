@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Node.Sphere
+module Graphics.Yodaka.Renderable.Sphere
 ( sphere
 ) where
 

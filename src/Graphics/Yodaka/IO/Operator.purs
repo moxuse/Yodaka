@@ -9,7 +9,7 @@ import Effect.Uncurried (EffectFn1, mkEffectFn1)
 import Data.Number.Format (precision, toStringWith)
 import Graphics.Three.Object3D (class Renderable)
 import Graphics.Yodaka.IO.Timer (Timer, createTimer)
-import Graphics.Yodaka.Shader (updateUniform)
+import Graphics.Yodaka.Renderable.Util (updateUniform)
 
 uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
 uniformUpdate name target = do  

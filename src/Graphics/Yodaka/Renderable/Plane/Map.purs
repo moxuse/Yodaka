@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Node.MapPlane
+module Graphics.Yodaka.Renderable.Plane.Map
 ( mapPlane
 )  where
 
@@ -10,7 +10,7 @@ import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Texture (class Texture)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3, uniformSampler2D)
+import Graphics.Yodaka.Renderable.Util (uniformVec3, uniformSampler2D)
 
 resolution :: Number
 resolution = 512.0

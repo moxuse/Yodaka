@@ -14,12 +14,13 @@ import Graphics.Three.Scene as Scene
 import Graphics.Three.Group as Group
 import Graphics.Three.Util (ffi)
 import Graphics.Yodaka.Port
-import Graphics.Yodaka.Node.Torus
-import Graphics.Yodaka.Node.Sphere
-import Graphics.Yodaka.Node.MapPlane
-import Graphics.Yodaka.Node.NoisePlane
-import Graphics.Yodaka.Node.NormalPlane
-import Graphics.Yodaka.Node.RGBNoisePlane
+import Graphics.Yodaka.Renderable.Torus
+import Graphics.Yodaka.Renderable.Sphere
+import Graphics.Yodaka.Renderable.MapPlane
+import Graphics.Yodaka.Renderable.NoisePlane
+import Graphics.Yodaka.Renderable.NormalPlane
+import Graphics.Yodaka.Renderable.RGBNoisePlane
+import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
