@@ -2,21 +2,21 @@ module Graphics.Yodaka.Node.NoisePlane
 ( noisePlane
 ) where
 
-import Prelude (bind)
+import Prelude (bind, discard, pure)
 import Effect
 import Data.Symbol (SProxy(..))
 import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
 import Graphics.Three.Material (createShader)
 import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Yodaka.Shader (uniformVec3)
+import Graphics.Yodaka.Shader (uniformVec3, uniformFloat)
 
 resolution = 512.0
 
-initUniforms = uniformVec3 
-  (SProxy :: SProxy "resolution")
-  (Vector.createVec3 resolution resolution 0.0)
-  {}
+initUniforms = do
+  let u = {}
+  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  uniformFloat (SProxy :: SProxy "time") 0.0 u1
 
 vertexShader :: String
 vertexShader = """
@@ -29,6 +29,7 @@ vertexShader = """
 fragmentalShader :: String
 fragmentalShader = """
   uniform vec3 resolution;
+  uniform float time;
 
   vec2 random(vec2 st) {
     st = vec2( dot(st, vec2(127.1, 311.7)),
@@ -53,7 +54,7 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 30.0);
+    vec2 pos = vec2(st * 30.0 + sin(time * 0.0008) * 4.0);
     color = vec3( noise(pos) * .5 + .5 );
     gl_FragColor = vec4(color, 1.0);
   }
