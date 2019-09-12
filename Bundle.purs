@@ -16,10 +16,10 @@ import Graphics.Three.Util (ffi)
 import Graphics.Yodaka.Port
 import Graphics.Yodaka.Renderable.Torus
 import Graphics.Yodaka.Renderable.Sphere
-import Graphics.Yodaka.Renderable.MapPlane
-import Graphics.Yodaka.Renderable.NoisePlane
-import Graphics.Yodaka.Renderable.NormalPlane
-import Graphics.Yodaka.Renderable.RGBNoisePlane
+import Graphics.Yodaka.Renderable.Plane.Map
+import Graphics.Yodaka.Renderable.Plane.Noise
+import Graphics.Yodaka.Renderable.Plane.Normal
+import Graphics.Yodaka.Renderable.Plane.RGBNoise
 import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
