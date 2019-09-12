@@ -1,5 +1,5 @@
 module Graphics.Yodaka.IO.Operator
-( unifromUpdate
+( uniformUpdate
 ) where
 
 import Prelude (Unit, pure, bind, ($), discard)
@@ -11,8 +11,8 @@ import Graphics.Three.Object3D (class Renderable)
 import Graphics.Yodaka.IO.Timer (Timer, createTimer)
 import Graphics.Yodaka.Shader (updateUniform)
 
-unifromUpdate :: forall r. Renderable r => String -> r -> Effect r
-unifromUpdate name target = do  
+uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
+uniformUpdate name target = do  
   _ <- createTimer $ mkEffectFn1 (\elapse -> updateUniform target name elapse)
   (log "run : unifromUpdate")        
   pure target
