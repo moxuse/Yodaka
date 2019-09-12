@@ -1,6 +1,7 @@
 module Graphics.Three.MaterialAddition
 ( MeshStandard
 , createMeshStandard
+, updateMaterial
 ) where
 
 import Prelude (Unit)
@@ -14,3 +15,6 @@ instance materialMeshStandard :: Material MeshStandard
 
 createMeshStandard :: forall opt. { | opt } -> Effect MeshStandard
 createMeshStandard = ffi [ "param", "" ] "new THREE.MeshStandardMaterial(param)"
+
+updateMaterial :: forall m. Material m => m -> Effect Unit
+updateMaterial = fpi [ "material", "" ] "material.needsUpdate = true"
