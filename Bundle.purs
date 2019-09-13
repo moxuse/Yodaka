@@ -1,7 +1,6 @@
 module Main where
 
 import Prelude
-
 import Effect (Effect)
 import Effect.Console (log)
 import Data.Number.Format (precision, toString, toStringWith)
@@ -20,11 +19,12 @@ import Graphics.Yodaka.Renderable.Plane.Map
 import Graphics.Yodaka.Renderable.Plane.Noise
 import Graphics.Yodaka.Renderable.Plane.Normal
 import Graphics.Yodaka.Renderable.Plane.RGBNoise
+import Graphics.Yodaka.Renderable.Plane.Disp2D
 import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
-import Graphics.Yodaka.Context (add, render)
+import Graphics.Yodaka.Context (add, render, uP)
 
 main :: Effect Unit
 main = do

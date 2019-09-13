@@ -54,7 +54,7 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 30.0 + sin(time * 0.0008) * 4.0);
+    vec2 pos = vec2(st * 16.0 + sin(time * 0.0002) * 4.0);
     color = vec3( noise(pos) * .5 + .5 );
     gl_FragColor = vec4(color, 1.0);
   }

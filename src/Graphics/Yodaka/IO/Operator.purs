@@ -14,5 +14,4 @@ import Graphics.Yodaka.Renderable.Util (updateUniform)
 uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
 uniformUpdate name target = do  
   _ <- createTimer $ mkEffectFn1 (\elapse -> updateUniform target name elapse)
-  (log "run : unifromUpdate")        
   pure target

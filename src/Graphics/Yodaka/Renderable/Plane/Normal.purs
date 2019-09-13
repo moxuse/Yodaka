@@ -26,7 +26,6 @@ vertexShader = """
   }
 """
 
--- This shader from : https://nogson2.hatenablog.com/entry/2017/11/18/150645
 fragmentalShader :: String
 fragmentalShader = """
   uniform vec3 resolution;

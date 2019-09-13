@@ -1,6 +1,7 @@
 module Graphics.Yodaka.Context
 ( add
 , render
+, uP
 ) where
 
 import Prelude (Unit, bind, discard, pure, ($))
@@ -11,6 +12,7 @@ import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
 import Graphics.Yodaka.Port (Port, globalPort, addTargetToPort)
 import Graphics.Yodaka.RenderTarget as RT
+import Graphics.Yodaka.IO.Operator (uniformUpdate)
 
 add :: forall o. Object3D o => Effect o -> Effect Unit
 add obj = do
@@ -26,3 +28,5 @@ render obj = do
   addTargetToPort target
   tex <- RT.getTexture target
   pure tex
+
+uP name target = uniformUpdate name target
