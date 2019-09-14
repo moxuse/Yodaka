@@ -12,7 +12,7 @@ import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
 import Graphics.Yodaka.Renderable.Util (uniformVec3)
 
-resolution = 512.0
+resolution = 1024.0
 
 initUniforms = uniformVec3 
   (SProxy :: SProxy "resolution")

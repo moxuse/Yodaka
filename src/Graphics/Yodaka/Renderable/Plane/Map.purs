@@ -13,7 +13,7 @@ import Graphics.Three.Math.Vector as Vector
 import Graphics.Yodaka.Renderable.Util (uniformVec3, uniformSampler2D)
 
 resolution :: Number
-resolution = 512.0
+resolution = 1024.0
 
 vertexShader :: String
 vertexShader = """

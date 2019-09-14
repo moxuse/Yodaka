@@ -1,4 +1,4 @@
-module Graphics.Yodaka.Renderable.Plane.Disp2D
+module Graphics.Yodaka.Renderable.Plane.CosGradient
 ( disp2DPlane
 )  where
 
@@ -28,16 +28,30 @@ fragmentalShader :: String
 fragmentalShader = """
   uniform float intensity;
   uniform vec3 resolution;  
-  uniform sampler2D base;
-  uniform sampler2D target;
+  uniform sampler2D texture;
+
+  uniform vec3 offsetColor;
+  uniform vec3 ampColor;
+  uniform vec3 freqColor;
+  uniform vec3 phaseColor;
+  uniform float freq;
 
   varying vec2 vUv;
 
-  void main() {    
-    float modX = sin(float(texture2D(target, vUv).r)) * sin(intensity * 0.00003);
-    float modY = -cos(float(texture2D(target, vUv).g)) * sin(intensity * 0.00005);
+  const float PI = 3.14159265;
 
-    vec2 modUv = (vUv) + vec2(modX, modY);
+  vec3 cosineGradient(vec3 a, vec3 b, vec3 c, vec3 d) {
+    float twoPI = PI * 3.0 * freq;
+    float er = a[0] + b[0] * cos(twoPI * (c[0] + d[0]));
+    float eg = a[1] + b[1] * cos(twoPI * (c[1] + d[1]));
+    float eb = a[2] + b[2] * cos(twoPI * (c[2] + d[2]));
+    return vec3(eb * 0.2, er * 0.1, eg * 0.4);
+  }
+
+  void main() {    
+    vec4 color target = (texture2D(texture, vUv);
+
+    vec3 gradient = cosineGradient(offsetColor, ampColor, freqColor, phasesolor);
 
     gl_FragColor = texture2D(base, modUv);
   }
