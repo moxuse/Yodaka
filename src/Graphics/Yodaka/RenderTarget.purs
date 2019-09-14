@@ -15,7 +15,8 @@ import Graphics.Three.Util (ffi, fpi)
 newtype RendererTarget = RendererTarget
  { target :: W.WebGLRenderTarget, scene :: Scene.Scene }
 
-textureSize = 512
+textureSize :: Int
+textureSize = 1024
 
 addObject :: forall a. Renderable a => Scene.Scene -> a -> Effect Unit
 addObject = fpi ["scene", "a", ""] "scene.add(a)"

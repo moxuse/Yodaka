@@ -14,7 +14,7 @@ Functions which Yodaka provides. (This is a proposal that could be changed in th
 add :: forall o. Object3D o => Effect o -> Effect Unit
 ```
 
-Takes `Object3D` and add to main scene.
+Takes `Object3D` instance and add to main scene.
 
 [Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L15)
 
@@ -24,7 +24,7 @@ Takes `Object3D` and add to main scene.
 render :: forall r. Renderable r => Effect r -> Effect TargetTexture
 ```
 
-Takes `Renderable` and add to sub scene and render as a texture.
+Takes `Renderable` instance and add to sub scene. It will be rendered offscreen texture.
 
 [Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L21)
 
@@ -44,9 +44,20 @@ Takes option record and make sphere. Options are match to [THREE.MeshStandardMat
 torus :: forall opt. { | opt } -> Effect Mesh
 ```
 
-As the same as sphere function but provides torus.
+As the same as `sphere` function but provides torus.
 
 [Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Renderable/Torus.purs#L14)
+
+#### uniformUpdate
+
+```
+uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
+```
+
+Takes uniform's value name and `Renderable` instance. Updating shader uniform of material of Rendarable.
+once it added, timer will apply for to update uniform's value each frame. `uP` is syntax-sugar of this function.
+
+[Source](https://github.com/moxuse/Yodaka/blob/603e99ae43b1c77072c39c0024a787fb0796a078/src/Graphics/Yodaka/IO/Operator.purs#L14)
 
 ## Types / Classes
 
@@ -57,7 +68,6 @@ class Renderable a
 ```
 
 This is declared not in Yodaka but purescript-three.
-
 In Three.js's context, it's similer to `THREE.Mesh`. It has material and geometry.
 
 [Source](https://github.com/aqui18/purescript-three/blob/master/src/Graphics/Three/Object3D.purs#L20)
@@ -69,10 +79,10 @@ newtype RendererTarget = RendererTarget
  { target :: WebGLRenderTarget, scene :: Scene }
 ```
 
-Structure of WebGLRenderTarget and its scene. ([See this great article](https://threejsfundamentals.org/threejs/lessons/threejs-rendertargets.html)). Yodaka's `render` function will compose it and add to `Port` which share context with rendering view on Kusabi editor.
+Structure of WebGLRenderTarget and its scene. (about WebGLRenderTarget, [See this great article](https://threejsfundamentals.org/threejs/lessons/threejs-rendertargets.html)) Yodaka's `render` function will compose it and add to `Port` that shares the context with rendering view on Kusabi editor.
 
 [Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/RenderTarget.purs#L15)
 
-This list don't discribe whole of library. Just collected what seems important.
+This list don't discribe whole of Yodaka functions. Just collected what seems important.
 
-Next step..., [Tutorial](https://github.com/moxuse/Kusabi/wiki/Tutorial) will coming up soon.
+Next step..., [Tutorial](https://github.com/moxuse/Kusabi/wiki/Tutorial) will coming soon.
