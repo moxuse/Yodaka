@@ -1,5 +1,5 @@
 module Graphics.Yodaka.Renderable.Plane.CosGradient
-( disp2DPlane
+( cGradPlane
 )  where
 
 import Prelude (bind)
@@ -57,16 +57,17 @@ fragmentalShader = """
   }
 """
 
-disp2DPlane :: forall t. Texture t => t -> t -> Effect Mesh
-disp2DPlane base target = do
+cGradPlane :: forall t. Texture t => t -> t -> Effect Mesh
+cGradPlane base target = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
-  let u2 = uniformFloat(SProxy :: SProxy "intensity") 0.125 u1
+  let u1 = uniformVec3 (SProxy :: SProxy "amp") (Vector.createVec3 resolution resolution 0.0) u
+  let u2 = uniformVec3 (SProxy :: SProxy "freq") (Vector.createVec3 resolution resolution 0.0) u1
+  let u2 = uniformFloat(SProxy :: SProxy "phase") 0.125 u1
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
-  let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
+  
   g <- createPlaneBufferGeometry 2.0 2.0 1 1
   m <- createShader 
-    { uniforms : u4
+    { uniforms : u3
     , vertexShader : vertexShader
     , fragmentShader : fragmentalShader  }
   createMesh g m
