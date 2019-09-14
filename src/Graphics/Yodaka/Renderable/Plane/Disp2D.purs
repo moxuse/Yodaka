@@ -13,7 +13,7 @@ import Graphics.Three.Math.Vector as Vector
 import Graphics.Yodaka.Renderable.Util (uniformVec3, uniformFloat, uniformSampler2D)
 
 resolution :: Number
-resolution = 512.0
+resolution = 2048.0
 
 vertexShader :: String
 vertexShader = """
@@ -34,8 +34,8 @@ fragmentalShader = """
   varying vec2 vUv;
 
   void main() {    
-    float modX = sin(float(texture2D(target, vUv).r)) * sin(intensity * 0.00003) + 0.03;
-    float modY = -cos(float(texture2D(target, vUv).g)) * sin(intensity * 0.00005) - 0.05;
+    float modX = sin(float(texture2D(target, vUv).r)) * sin(intensity * 0.00003);
+    float modY = -cos(float(texture2D(target, vUv).g)) * sin(intensity * 0.00005);
 
     vec2 modUv = (vUv) + vec2(modX, modY);
 

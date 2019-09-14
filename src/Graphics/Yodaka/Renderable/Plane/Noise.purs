@@ -11,7 +11,7 @@ import Graphics.Three.Object3D (Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
 import Graphics.Yodaka.Renderable.Util (uniformVec3, uniformFloat)
 
-resolution = 512.0
+resolution = 1024.0
 
 initUniforms = do
   let u = {}
@@ -54,8 +54,14 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 16.0 + sin(time * 0.0002) * 4.0);
+    vec2 pos = vec2(st * 32.0 + sin(time * 0.0002) * 4.0);
     color = vec3( noise(pos) * .5 + .5 );
+    if (st.x > 0.9875) {
+      color = (1.0 - st.x) * 80.0 * color;
+    }
+    if (st.x < 0.0125) {
+      color = st.x * 80.0 * color;
+    }
     gl_FragColor = vec4(color, 1.0);
   }
 """
