@@ -26,48 +26,47 @@ vertexShader = """
 
 fragmentalShader :: String
 fragmentalShader = """
-  uniform float intensity;
-  uniform vec3 resolution;  
-  uniform sampler2D texture;
+  uniform sampler2D base;
 
   uniform vec3 offsetColor;
   uniform vec3 ampColor;
   uniform vec3 freqColor;
-  uniform vec3 phaseColor;
-  uniform float freq;
+  // uniform vec3 phaseColor;
+  uniform float phase;
 
   varying vec2 vUv;
 
   const float PI = 3.14159265;
 
   vec3 cosineGradient(vec3 a, vec3 b, vec3 c, vec3 d) {
-    float twoPI = PI * 3.0 * freq;
-    float er = a[0] + b[0] * cos(twoPI * (c[0] + d[0]));
-    float eg = a[1] + b[1] * cos(twoPI * (c[1] + d[1]));
-    float eb = a[2] + b[2] * cos(twoPI * (c[2] + d[2]));
+    float rotPhase = sin(phase * 0.001) * 1.0;
+    float twoPI = PI * 3.0;
+    float er = a[0] + b[0] * cos(twoPI * (c[0] * rotPhase + d[0])) + rotPhase;
+    float eg = a[1] + b[1] * cos(twoPI * (c[1] * rotPhase + d[1])) + rotPhase;
+    float eb = a[2] + b[2] * cos(twoPI * (c[2] * rotPhase + d[2])) + rotPhase;
     return vec3(eb * 0.2, er * 0.1, eg * 0.4);
   }
 
   void main() {    
-    vec4 color target = (texture2D(texture, vUv);
+    vec3 phaseColor = texture2D(base, vUv).rgb;
+    vec3 gradient = cosineGradient(offsetColor, ampColor, freqColor, phaseColor);
 
-    vec3 gradient = cosineGradient(offsetColor, ampColor, freqColor, phasesolor);
-
-    gl_FragColor = texture2D(base, modUv);
+    gl_FragColor = vec4(gradient, 1.0);
   }
 """
 
-cGradPlane :: forall t. Texture t => t -> t -> Effect Mesh
-cGradPlane base target = do
+cGradPlane :: forall t. Texture t => t -> Effect Mesh
+cGradPlane base = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "amp") (Vector.createVec3 resolution resolution 0.0) u
-  let u2 = uniformVec3 (SProxy :: SProxy "freq") (Vector.createVec3 resolution resolution 0.0) u1
-  let u2 = uniformFloat(SProxy :: SProxy "phase") 0.125 u1
-  let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
+  let u1 = uniformSampler2D (SProxy :: SProxy "base") base u
+  let u2 = uniformVec3 (SProxy :: SProxy "offsetColor") (Vector.createVec3 1.2 0.25 2.2) u1
+  let u3 = uniformVec3 (SProxy :: SProxy "ampColor") (Vector.createVec3 0.8 0.25 1.1) u2
+  let u4 = uniformVec3 (SProxy :: SProxy "freqColor") (Vector.createVec3 0.9 1.25 0.9) u3
+  let u5 = uniformFloat(SProxy :: SProxy "phase") 0.25 u4
   
   g <- createPlaneBufferGeometry 2.0 2.0 1 1
   m <- createShader 
-    { uniforms : u3
+    { uniforms : u5
     , vertexShader : vertexShader
     , fragmentShader : fragmentalShader  }
   createMesh g m

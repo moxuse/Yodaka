@@ -18,6 +18,9 @@ newtype RendererTarget = RendererTarget
 textureSize :: Int
 textureSize = 1024
 
+postProcessTextureSize :: Int
+postProcessTextureSize = 1280
+
 addObject :: forall a. Renderable a => Scene.Scene -> a -> Effect Unit
 addObject = fpi ["scene", "a", ""] "scene.add(a)"
 
@@ -29,6 +32,14 @@ renderTarget overlap = do
   let target = createRenderTarget t s
   pure target
 
+-- postProcessTarget :: forall r. Renderable r => r -> Effect RendererTarget
+-- postProcessTarget overlap = do
+--   s <- Scene.create
+--   t <- defaultRendererTarget
+--   addObject s overlap
+--   let target = createRenderTarget t s
+--   pure target
+
 createRenderTarget :: W.WebGLRenderTarget -> Scene.Scene -> RendererTarget
 createRenderTarget t s = RendererTarget { target : t, scene : s }
 
@@ -37,6 +48,12 @@ createWebRenderTarget ::
 createWebRenderTarget opt = do
   target <- W.createWeGLRenderer opt textureSize textureSize
   pure target
+
+-- createPostProcessWebRenderTarget ::
+--   forall opt. { | opt } -> Effect W.WebGLRenderTarget
+--   createPostProcessWebRenderTarget opt = do
+--   target <- W.createWeGLRenderer opt postProcessTextureSize postProcessTextureSize
+--   pure target
 
 defaultRendererTarget :: Effect W.WebGLRenderTarget
 defaultRendererTarget = do

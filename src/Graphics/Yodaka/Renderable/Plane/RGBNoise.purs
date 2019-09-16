@@ -53,10 +53,10 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 posX= vec2(st * 28.0) + sin(time * 0.0008) * 4.0;
-    vec2 posY = vec2(st * 32.0) + sin(time * 0.0008) * 4.0;
-    vec2 posZ = vec2(st * 48.0) + sin(time * 0.0008) * 4.0;
-    color = vec3( noise(posX) * .85 + .15, noise(posY) * .85 + .15, noise(posZ) * .85 + .15 );
+    vec2 posX = vec2(st * 18.0) + sin(time * 0.0008) * 4.0;
+    vec2 posY = vec2(st * 8.0) + sin(time * 0.0008) * 4.0;
+    vec2 posZ = vec2(st * 12.0) + sin(time * 0.0008) * 4.0;
+    color = vec3( noise(posX) + .333, noise(posY) + .333, noise(posZ) + .333 );
     gl_FragColor = vec4(color, 1.0);
   }
 """

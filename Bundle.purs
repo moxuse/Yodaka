@@ -20,6 +20,7 @@ import Graphics.Yodaka.Renderable.Plane.Noise
 import Graphics.Yodaka.Renderable.Plane.Normal
 import Graphics.Yodaka.Renderable.Plane.RGBNoise
 import Graphics.Yodaka.Renderable.Plane.Disp2D
+import Graphics.Yodaka.Renderable.Plane.CosGradient
 import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
