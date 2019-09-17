@@ -48,6 +48,16 @@ As the same as `sphere` function but provides torus.
 
 [Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Renderable/Torus.purs#L14)
 
+#### setUniform
+
+```
+setUniform :: forall a r. Renderable r => String -> a -> r -> Effect r
+```
+
+Takes uniform's value name newValue and `Renderable` instance. Set uniform of material of Rendarable. `sU` is syntax-sugar of this function.
+
+[Source](https://github.com/moxuse/Yodaka/blob/603e99ae43b1c77072c39c0024a787fb0796a078/src/Graphics/Yodaka/IO/Operator.purs#L14)
+
 #### uniformUpdate
 
 ```
@@ -55,7 +65,7 @@ uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
 ```
 
 Takes uniform's value name and `Renderable` instance. Updating shader uniform of material of Rendarable.
-once it added, timer will apply for to update uniform's value each frame. `uP` is syntax-sugar of this function.
+once it added, timer will apply for to update uniform's value each frame. `uU` is syntax-sugar of this function.
 
 [Source](https://github.com/moxuse/Yodaka/blob/603e99ae43b1c77072c39c0024a787fb0796a078/src/Graphics/Yodaka/IO/Operator.purs#L14)
 

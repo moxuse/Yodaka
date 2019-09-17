@@ -25,7 +25,7 @@ import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
-import Graphics.Yodaka.Context (add, render, uP)
+import Graphics.Yodaka.Context (add, render, uUni, sUni)
 
 main :: Effect Unit
 main = do

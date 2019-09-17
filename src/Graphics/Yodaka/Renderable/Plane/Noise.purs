@@ -16,7 +16,8 @@ resolution = 1024.0
 initUniforms = do
   let u = {}
   let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
-  uniformFloat (SProxy :: SProxy "time") 0.0 u1
+  let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
+  uniformFloat (SProxy :: SProxy "time") 0.0 u2
 
 vertexShader :: String
 vertexShader = """
@@ -29,6 +30,7 @@ vertexShader = """
 fragmentalShader :: String
 fragmentalShader = """
   uniform vec3 resolution;
+  uniform float density;
   uniform float time;
 
   vec2 random(vec2 st) {
@@ -54,7 +56,7 @@ fragmentalShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 32.0 + sin(time * 0.0008) * 4.0);
+    vec2 pos = vec2(st * 32.0 * density + sin(time * 0.0008) * 4.0);
     color = vec3( noise(pos) * .5 + .5 );
     if (st.x > 0.9875) {
       color = (1.0 - st.x) * 80.0 * color;

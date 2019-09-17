@@ -3,7 +3,6 @@ module Graphics.Yodaka.Renderable.Util
 , uniformFloat
 , uniformVec3
 , uniformSampler2D
-, updateUniform
 ) where
 
 import Prelude (Unit, bind, discard)
@@ -12,9 +11,7 @@ import Record.Builder (build, insert)
 import Control.Bind (class Bind)
 import Data.Symbol (class IsSymbol, SProxy, reflectSymbol)
 import Prim.Row as Row
-import Graphics.Three.Material (class Material, setUniform)
-import Graphics.Three.MaterialAddition (updateMaterial)
-import Graphics.Three.Object3D (class Renderable, Mesh, createMesh, getMaterial)
+import Graphics.Three.Object3D (class Renderable, Mesh, createMesh)
 import Graphics.Three.Math.Vector as Vector
 import Graphics.Three.Texture (class Texture, ScreenTexture)
 
@@ -49,8 +46,3 @@ uniformVec3 name value_ rec = build (insert name uniformValue) rec
 
 uniformSampler2D name value_ rec = build (insert name { value : value_ }) rec
 
-updateUniform :: forall a r. Renderable r => r -> String -> a -> Effect Unit
-updateUniform target name newValue = do
-  mat <- getMaterial target
-  setUniform mat name newValue
-  updateMaterial mat
