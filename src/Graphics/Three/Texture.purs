@@ -1,7 +1,7 @@
 module Graphics.Three.Texture
 ( class Texture
 , TargetTexture
-, MapTexture
+, ScreenTexture
 , createTexture
 ) where
 
@@ -9,14 +9,14 @@ import Prelude (Unit)
 import Effect (Effect)
 import Graphics.Three.Util (ffi)
 
-foreign import data MapTexture :: Type
+foreign import data ScreenTexture :: Type
 
 class Texture t
 
 data TargetTexture
 
 instance targetTexture :: Texture TargetTexture
-instance mapTexture :: Texture MapTexture
+instance screenTexture :: Texture ScreenTexture
 
-createTexture :: Effect MapTexture
+createTexture :: Effect ScreenTexture
 createTexture = ffi [ "" ] "new THREE.Texture()"

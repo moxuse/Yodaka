@@ -3,8 +3,6 @@ module Graphics.Three.WebGLRenderTarget
 , NearestFilter
 , ClampToEdgeWrapping
 , createWeGLRenderer
-, clampToEdgeWrapping
-, nearestFilter
 ) where
 
 import Prelude (Unit)
@@ -20,9 +18,3 @@ foreign import data ClampToEdgeWrapping :: Type
 
 createWeGLRenderer ::  forall opt. {|opt} -> Int -> Int -> Effect WebGLRenderTarget
 createWeGLRenderer = ffi [ "param", "width", "height", "" ] "new THREE.WebGLRenderTarget(width, height, param)"
-
-clampToEdgeWrapping :: Effect ClampToEdgeWrapping
-clampToEdgeWrapping = ffi [ "" ] "THREE.ClampToEdgeWrapping"
-
-nearestFilter :: Effect NearestFilter
-nearestFilter = ffi [ "" ] "THREE.NearestFilter"

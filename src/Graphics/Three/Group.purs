@@ -1,20 +1,18 @@
 module Graphics.Three.Group
-( class Group
-, Object3DGroup
+( Object3DGroup
 , create
 , addObject
 , rotateIncrement
 ) where
 
-import Prelude (Unit)
+import Prelude (Unit, bind, pure)
+import Data.Show
 import Data.Int
 import Effect (Effect)
 import Graphics.Three.Util (ffi, fpi)
 import Graphics.Three.Object3D (class Object3D)
 
 foreign import data Object3DGroup :: Type
-
-class Group g
 
 instance object3DGroup :: Object3D Object3DGroup
 

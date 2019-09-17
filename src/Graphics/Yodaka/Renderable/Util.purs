@@ -16,7 +16,7 @@ import Graphics.Three.Material (class Material, setUniform)
 import Graphics.Three.MaterialAddition (updateMaterial)
 import Graphics.Three.Object3D (class Renderable, Mesh, createMesh, getMaterial)
 import Graphics.Three.Math.Vector as Vector
-import Graphics.Three.Texture (class Texture, MapTexture)
+import Graphics.Three.Texture (class Texture, ScreenTexture)
 
 class UniformValue u
 
