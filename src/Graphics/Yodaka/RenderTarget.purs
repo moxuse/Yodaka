@@ -61,9 +61,6 @@ defaultRendererTarget = do
 
 getTexture :: RendererTarget -> Effect TargetTexture
 getTexture (RendererTarget t) = do
-  tex <- unsafeGetTexture t.target
+  tex <- W.unsafeGetTexture t.target
   pure tex
-
-unsafeGetTexture ::  W.WebGLRenderTarget -> Effect TargetTexture
-unsafeGetTexture = ffi [ "target", "" ] "target.texture"
-       
+ 
