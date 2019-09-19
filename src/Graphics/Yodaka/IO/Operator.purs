@@ -15,7 +15,7 @@ import Graphics.Yodaka.IO.Timer (Timer, createTimer)
 
 uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
 uniformUpdate name target = do  
-  _ <- createTimer $ mkEffectFn1 (\elapse -> setUniform target name elapse)
+  _ <- createTimer $ mkEffectFn1 (\elapse -> setUniform name elapse target)
   pure target
 
 setUniform :: forall a r. Renderable r => String -> a -> r -> Effect r

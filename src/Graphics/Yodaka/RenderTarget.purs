@@ -18,8 +18,8 @@ newtype RendererTarget = RendererTarget
 textureSize :: Int
 textureSize = 1024
 
-postProcessTextureSize :: Int
-postProcessTextureSize = 1280
+-- postProcessTextureSize :: Int
+-- postProcessTextureSize = 1280
 
 addObject :: forall a. Renderable a => Scene.Scene -> a -> Effect Unit
 addObject = fpi ["scene", "a", ""] "scene.add(a)"
