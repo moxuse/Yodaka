@@ -45,4 +45,3 @@ uniformVec3 name value_ rec = build (insert name uniformValue) rec
     uniformValue = { value : value_ }
 
 uniformSampler2D name value_ rec = build (insert name { value : value_ }) rec
-
