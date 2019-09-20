@@ -1,5 +1,5 @@
 module Graphics.Yodaka.IO.Operator
-( uniformUpdate
+( updateUniform
 , setUniform  
 ) where
 
@@ -13,8 +13,8 @@ import Graphics.Three.Material as MT
 import Graphics.Three.MaterialAddition (updateMaterial)
 import Graphics.Yodaka.IO.Timer (Timer, createTimer)
 
-uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
-uniformUpdate name target = do  
+updateUniform :: forall r. Renderable r => String -> r -> Effect r
+updateUniform name target = do  
   _ <- createTimer $ mkEffectFn1 (\elapse -> setUniform name elapse target)
   pure target
 

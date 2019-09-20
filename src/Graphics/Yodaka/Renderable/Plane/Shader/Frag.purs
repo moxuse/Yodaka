@@ -61,7 +61,7 @@ noiseShader = """
   void main() {
     vec2 st = gl_FragCoord.xy / resolution.xy;
     vec3 color = vec3(0.0);
-    vec2 pos = vec2(st * 32.0 * density + sin(time * 0.0008) * 4.0);
+    vec2 pos = vec2(st * 20.0 * density + sin(time * 0.0008) * 4.0);
     color = vec3( noise(pos) * .5 + .5 );
     if (st.x > 0.9875) {
       color = (1.0 - st.x) * 80.0 * color;

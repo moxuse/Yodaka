@@ -7,7 +7,6 @@ module Graphics.Yodaka.Context
 
 import Prelude (Unit, bind, discard, pure, ($))
 import Effect (Effect)
-import Data.Array (snoc)
 import Graphics.Three.Object3D (class Renderable, class Object3D, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
@@ -30,6 +29,9 @@ render obj = do
   tex <- RT.getTexture target
   pure tex
 
-uU name target = OP.uniformUpdate name target
+uU :: forall r. Renderable r => String -> r -> Effect r
+uU name target = OP.updateUniform name target
 
+-- TODO :: need correct type for 'n' that will be used as newValue
+sU :: forall n r. Renderable r => String -> n -> r -> Effect r
 sU name newValue target = OP.setUniform name newValue target

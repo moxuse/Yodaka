@@ -10,7 +10,6 @@ You can edit this file as you like.
     , "console"
     , "effect"
     , "foreign"
-    , "halogen"
     , "identity"
     , "integers"
     , "lists"

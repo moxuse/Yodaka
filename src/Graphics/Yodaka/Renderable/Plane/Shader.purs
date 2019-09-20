@@ -24,53 +24,49 @@ import  Graphics.Yodaka.Renderable.Plane.Shader.Frag as FS
 resolution :: Number
 resolution = 1024.0
 
-normalPlane :: Effect Mesh
-normalPlane = do
-  let u = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) {}
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
+planeSize :: Number
+planeSize = 2.0
+
+planeSegmentNum :: Int
+planeSegmentNum = 1
+
+makePlameMesh frag u = do
+  g <- createPlaneBufferGeometry planeSize planeSize planeSegmentNum planeSegmentNum
   m <- createShader
     { uniforms : u
     , vertexShader : VS.vertexShader
-    , fragmentShader : FS.normalShader }
+    , fragmentShader : frag }
   createMesh g m
+
+resolutionUniform rec = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) rec
+
+normalPlane :: Effect Mesh
+normalPlane = do
+  let u = resolutionUniform {}
+  makePlameMesh FS.normalShader u
 
 mapPlane :: forall t. Texture t => t -> Effect Mesh
 mapPlane tex = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  let u1 = resolutionUniform u
   let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u2
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.mapShader }
-  createMesh g m
+  makePlameMesh  FS.mapShader u2
 
 noisePlane :: Effect Mesh
 noisePlane = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  let u1 = resolutionUniform u
   let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
   let u3 = uniformFloat (SProxy :: SProxy "time") 0.0 u2
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u3
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.noiseShader }
-  createMesh g m
+  makePlameMesh FS.noiseShader u3
 
 rgbNoisePlane :: Effect Mesh
 rgbNoisePlane = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  let u1 = resolutionUniform u
   let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
   let u3 = uniformFloat (SProxy :: SProxy "time") 0.0 u2
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader
-    { uniforms : u3
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.rgbNoiseShader }
-  createMesh g m
+  makePlameMesh FS.rgbNoiseShader u3
 
 cGradPlane :: forall t. Texture t => t -> Effect Mesh
 cGradPlane base = do
@@ -79,53 +75,33 @@ cGradPlane base = do
   let u2 = uniformVec3 (SProxy :: SProxy "offsetColor") (Vector.createVec3 1.2 0.25 2.2) u1
   let u3 = uniformVec3 (SProxy :: SProxy "ampColor") (Vector.createVec3 0.8 0.25 1.1) u2
   let u4 = uniformVec3 (SProxy :: SProxy "freqColor") (Vector.createVec3 0.9 1.25 0.9) u3
-  let u5 = uniformFloat(SProxy :: SProxy "phase") 0.25 u4
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u5
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.cGradShader }
-  createMesh g m
+  let u5 = uniformFloat(SProxy :: SProxy "phase") 0.0 u4
+  makePlameMesh FS.cGradShader u5
 
 disp2DPlane :: forall t. Texture t => t -> t -> Effect Mesh
 disp2DPlane base target = do
   let u = {}
-  let u1 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u
+  let u1 = resolutionUniform u
   let u2 = uniformFloat(SProxy :: SProxy "intensity") 0.125 u1
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u4
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.disp2DShader }
-  createMesh g m
+  makePlameMesh FS.disp2DShader u4
   
 kinderPlane :: forall t. Texture t => t -> t -> Effect Mesh
 kinderPlane base target = do
   let u = {}
   let u1 = uniformInt (SProxy :: SProxy "time") 4 u
-  let u2 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u1
+  let u2 = resolutionUniform u1
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u4
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.kinderShader }
-  createMesh g m
+  makePlameMesh FS.kinderShader u4
 
 cfdPlane :: forall t. Texture t => t -> t -> Effect Mesh
 cfdPlane base target = do
   let u = {}
   let u1 = uniformInt (SProxy :: SProxy "rotNum") 4 u
   let u2 = uniformFloat (SProxy :: SProxy "angRnd") 0.05 u1
-  let u3 = uniformVec3 (SProxy :: SProxy "resolution") (Vector.createVec3 resolution resolution 0.0) u2
+  let u3 = resolutionUniform u2
   let u4 = uniformSampler2D (SProxy :: SProxy "base") base u3
   let u5 = uniformSampler2D (SProxy :: SProxy "target") target u4
-  g <- createPlaneBufferGeometry 2.0 2.0 1 1
-  m <- createShader 
-    { uniforms : u5
-    , vertexShader : VS.vertexShader
-    , fragmentShader : FS.cfdShader }
-  createMesh g m
+  makePlameMesh FS.cfdShader u5

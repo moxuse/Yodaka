@@ -43,13 +43,12 @@ renderTarget overlap = do
 createRenderTarget :: W.WebGLRenderTarget -> Scene.Scene -> RendererTarget
 createRenderTarget t s = RendererTarget { target : t, scene : s }
 
-createWebRenderTarget ::
-  forall opt. { | opt } -> Effect W.WebGLRenderTarget
+createWebRenderTarget :: forall opt. { | opt } -> Effect W.WebGLRenderTarget
 createWebRenderTarget opt = do
   target <- W.createWeGLRenderer opt textureSize textureSize
   pure target
 
--- createPostProcessWebRenderTarget ::
+-- createPostProcessWebGLRenderTarget ::
 --   forall opt. { | opt } -> Effect W.WebGLRenderTarget
 --   createPostProcessWebRenderTarget opt = do
 --   target <- W.createWeGLRenderer opt postProcessTextureSize postProcessTextureSize
