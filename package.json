@@ -5,5 +5,8 @@
   "repository": "git@github.com:moxuse/Yodaka.git",
   "author": "moxuse <moxuse@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "spago build"
+  },
   "dependencies": {}
 }
