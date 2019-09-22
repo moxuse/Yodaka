@@ -29,4 +29,4 @@ noiseEffect :: Effect Noise
 noiseEffect = ffi [ "" ] "new THREE.NoiseEffect()"
 
 bokehEffect :: Effect Bokeh
-bokehEffect = ffi [ "" ] "new THREE.BokehEffect({ focus : 0.9, dof : 0.07, aperture : 0.3})"
+bokehEffect = ffi [ "" ] "new THREE.BokehEffect({ focus : 0.9, dof : 0.07, aperture : 0.3 })"

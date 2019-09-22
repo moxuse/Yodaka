@@ -11,7 +11,7 @@ import Effect (Effect)
 import Graphics.Three.Object3D (class Renderable, class Object3D, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
-import Graphics.Three.PostProcessing.PostEffect (class PostEffect, Bloom, createBloomEffect)
+import Graphics.Three.PostProcessing.PostEffect (class PostEffect)
 import Graphics.Yodaka.Port (Port, globalPort, addTargetToPort, addEffectToPort)
 import Graphics.Yodaka.PostEffectTarget as PT
 import Graphics.Yodaka.RenderTarget as RT
