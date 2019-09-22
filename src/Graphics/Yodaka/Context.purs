@@ -1,5 +1,6 @@
 module Graphics.Yodaka.Context
 ( add
+, addPP
 , render
 , uU
 , sU
@@ -10,7 +11,9 @@ import Effect (Effect)
 import Graphics.Three.Object3D (class Renderable, class Object3D, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (TargetTexture)
-import Graphics.Yodaka.Port (Port, globalPort, addTargetToPort)
+import Graphics.Three.PostProcessing.PostEffect (class PostEffect, Bloom, createBloomEffect)
+import Graphics.Yodaka.Port (Port, globalPort, addTargetToPort, addEffectToPort)
+import Graphics.Yodaka.PostEffectTarget as PT
 import Graphics.Yodaka.RenderTarget as RT
 import Graphics.Yodaka.IO.Operator as OP
 
@@ -28,6 +31,11 @@ render obj = do
   addTargetToPort target
   tex <- RT.getTexture target
   pure tex
+
+addPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
+addPP effect renderToScreen = do
+  eff <- effect
+  addEffectToPort $ PT.createPETarget eff renderToScreen
 
 uU :: forall r. Renderable r => String -> r -> Effect r
 uU name target = OP.updateUniform name target

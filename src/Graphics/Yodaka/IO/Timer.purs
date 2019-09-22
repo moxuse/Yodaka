@@ -10,7 +10,4 @@ import Graphics.Three.Util (ffi, fpi)
 
 foreign import data Timer :: Type
 
--- type TimerCallback = Function a
-
--- createTimer :: forall a. (EffectFn1 a) -> Effect Timer
 createTimer = fpi ["callback", ""] "d3.timer(callback)"
