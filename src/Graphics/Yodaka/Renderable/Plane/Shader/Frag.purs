@@ -151,8 +151,8 @@ disp2DShader = """
   varying vec2 vUv;
 
   void main() {    
-    float modX = sin(float(texture2D(target, vUv).r)) * sin(intensity * 0.00003);
-    float modY = -cos(float(texture2D(target, vUv).g)) * sin(intensity * 0.00005);
+    float modX = sin(float(texture2D(target, vUv).r)) * intensity;
+    float modY = -cos(float(texture2D(target, vUv).g)) * intensity;
 
     vec2 modUv = (vUv) + vec2(modX, modY);
 
