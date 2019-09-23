@@ -16,7 +16,7 @@ add :: forall o. Object3D o => Effect o -> Effect Unit
 
 Takes `Object3D` instance and add to main scene.
 
-[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L15)
+[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L20)
 
 #### render
 
@@ -26,7 +26,7 @@ render :: forall r. Renderable r => Effect r -> Effect TargetTexture
 
 Takes `Renderable` instance and add to sub scene. It will be rendered offscreen texture.
 
-[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L21)
+[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L26)
 
 #### sphere
 
