@@ -10,27 +10,27 @@ Functions which Yodaka provides. (This is a proposal that could be changed in th
 
 #### add
 
-```
+``` purescript
 add :: forall o. Object3D o => Effect o -> Effect Unit
 ```
 
 Takes `Object3D` instance and add to main scene.
 
-[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L15)
+[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L20)
 
 #### render
 
-```
+``` purescript
 render :: forall r. Renderable r => Effect r -> Effect TargetTexture
 ```
 
 Takes `Renderable` instance and add to sub scene. It will be rendered offscreen texture.
 
-[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L21)
+[Source](https://github.com/moxuse/Yodaka/blob/master/src/Graphics/Yodaka/Context.purs#L26)
 
 #### sphere
 
-```
+``` purescript
 sphere :: forall opt. { | opt } -> Effect Mesh
 ```
 
@@ -40,7 +40,7 @@ Takes option record and make sphere. Options are match to [THREE.MeshStandardMat
 
 #### torus
 
-```
+``` purescript
 torus :: forall opt. { | opt } -> Effect Mesh
 ```
 
@@ -50,7 +50,7 @@ As the same as `sphere` function but provides torus.
 
 #### setUniform
 
-```
+``` purescript
 setUniform :: forall a r. Renderable r => String -> a -> r -> Effect r
 ```
 
@@ -60,7 +60,7 @@ Takes uniform's value name newValue and `Renderable` instance. Set uniform of ma
 
 #### uniformUpdate
 
-```
+``` purescript
 uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
 ```
 
@@ -73,7 +73,7 @@ once it added, timer will apply for to update uniform's value each frame. `uU` i
 
 ### Rendarable
 
-```
+``` purescript
 class Renderable a
 ```
 
@@ -84,7 +84,7 @@ In Three.js's context, it's similer to `THREE.Mesh`. It has material and geometr
 
 ### RenderTarget
 
-```
+``` purescript
 newtype RendererTarget = RendererTarget
  { target :: WebGLRenderTarget, scene :: Scene }
 ```
