@@ -2,11 +2,13 @@ module Graphics.Yodaka.Renderable.Plane.Shader
 ( normalPlane
 , noisePlane
 , mapPlane
+-- , twoTonePlane
+, clampPlane
 , rgbNoisePlane
 , cGradPlane
 , disp2DPlane
 , kinderPlane
-, cfdPlane
+, makePlameMesh
 )  where
 
 import Prelude (bind, discard)
@@ -52,6 +54,19 @@ mapPlane tex = do
   let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
   makePlameMesh  FS.mapShader u2
 
+-- twoTonePlane :: Effect Mesh
+-- twoTonePlane = do
+--   let u = {}
+--   let u1 = uniformVec3 (SProxy :: SProxy "upColor") (Vector.createVec3 1.0 0.3 0.6) u
+--   let u2 = uniformVec3 (SProxy :: SProxy "bottomColor") (Vector.createVec3 1.0 1.0 0.8) u1
+--   makePlameMesh  FS.twoToneShader u2
+
+clampPlane ::  forall t. Texture t => t -> Effect Mesh
+clampPlane input = do
+  let u = uniformSampler2D (SProxy :: SProxy "input") input {}
+  makePlameMesh FS.clampShader u
+  
+
 noisePlane :: Effect Mesh
 noisePlane = do
   let u = {}
@@ -96,12 +111,3 @@ kinderPlane base target = do
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
   makePlameMesh FS.kinderShader u4
 
-cfdPlane :: forall t. Texture t => t -> t -> Effect Mesh
-cfdPlane base target = do
-  let u = {}
-  let u1 = uniformInt (SProxy :: SProxy "rotNum") 4 u
-  let u2 = uniformFloat (SProxy :: SProxy "angRnd") 0.05 u1
-  let u3 = resolutionUniform u2
-  let u4 = uniformSampler2D (SProxy :: SProxy "base") base u3
-  let u5 = uniformSampler2D (SProxy :: SProxy "target") target u4
-  makePlameMesh FS.cfdShader u5

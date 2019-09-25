@@ -1,6 +1,6 @@
 module Graphics.Yodaka.Context
 ( add
-, addPP
+, renderPP
 , render
 , uU
 , sU
@@ -32,8 +32,8 @@ render obj = do
   tex <- RT.getTexture target
   pure tex
 
-addPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
-addPP effect renderToScreen = do
+renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
+renderPP effect renderToScreen = do
   eff <- effect
   addEffectToPort $ PT.createPETarget eff renderToScreen
 

@@ -1,12 +1,13 @@
 module Graphics.Yodaka.Renderable.Plane.Shader.Frag
 ( normalShader 
 , mapShader
+-- , twoToneShader
+, clampShader
 , noiseShader
 , rgbNoiseShader
 , cGradShader
 , disp2DShader
 , kinderShader
-, cfdShader
 ) where
 
 import Data.String
@@ -29,6 +30,31 @@ mapShader = """
 
   void main() {
     gl_FragColor = texture2D(mapTexture , vUv);
+  }
+"""
+
+-- twoToneShader :: String
+-- twoToneShader = """
+--   varying vec2 vUv;
+--   uniform vec3 upColor;
+--   uniform vec3 bottomColor;
+
+--   void main() {
+--     vec3 col = upColor.xyz;
+--     if (vUv.y < 0.5) {
+--       col = bottomColor.xyz;
+--     }
+--     gl_FragColor = vec4(col , 1.0);
+    
+--   }
+-- """
+
+clampShader :: String
+clampShader = """
+  varying vec2 vUv;
+  uniform sampler2D input;
+  void main() {
+    gl_FragColor = clamp(texture2D(input, vUv), 0.0, 1.0);
   }
 """
 
@@ -202,95 +228,5 @@ kinderShader = """
     res += .999 * texture2D( target, uv - off );
     
     gl_FragColor = res;
-  }
-"""
-
-cfdShader :: String
-cfdShader = """
-  // created by florian berger (flockaroo) - 2016
-  // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
-
-  // single pass CFD
-  // ---------------
-  // this is some "computational flockarooid dynamics" ;)
-  // the self-advection is done purely rotational on all scales. 
-  // therefore i dont need any divergence-free velocity field. 
-  // with stochastic sampling i get the proper "mean values" of rotations 
-  // over time for higher order scales.
-  //
-  // try changing "RotNum" for different accuracies of rotation calculation
-  //
-  // "angRnd" is the rotational randomness of the rotation-samples
-  // "posRnd" is an additional error to the position of the samples (not really needed)
-  // for higher numbers of "RotNum" "angRnd" can also be set to 0
-  
-  varying vec2 vUv;
-  uniform int rotNum; // = 3
-  uniform float angRnd; // = 1.0
-
-  uniform vec3 resolution;
-  
-  uniform sampler2D base;
-  uniform sampler2D target;
-
-  const float posRnd = 0.0;
-  
-  float ang() { return 0.00025 * 3.1415926535 / float(rotNum); }
-  mat2 m() { 
-    float ang_ = ang();
-    return mat2(cos(ang_), sin(ang_), -sin(ang_), cos(ang_)); 
-  }
-
-  float hash(float seed) {
-    return fract(sin(seed) * 8934.5453 ); 
-  }
-
-  vec4 getRand4(float seed) {
-    return vec4(hash(seed), hash(seed + 123.21), hash(seed + 234.32), hash(seed + 453.54)); 
-  }
-  
-  vec4 randS(vec2 uv) {
-      // return getRand4(uv.y + uv.x * 0.12567) - vec4(0.95);
-      return texture2D(target, uv) - vec4(0.5);
-  }
-
-  float getRot(vec2 uv, float sc) {
-      float ang2 = angRnd * randS(uv).x * ang();
-      vec2 p = vec2(cos(ang2), sin(ang2));
-      float rot = 0.0;
-      for(int i = 0; i < rotNum; i++)
-      {
-          vec2 p2 = (p + posRnd * randS(uv + p*sc).xy) * sc;
-          vec2 v = texture2D(base, fract(uv + p2)).xy - vec2(0.005);
-          rot += cross(vec3(v, 0.0), vec3(p2, 0.0)).z / dot(p2, p2);
-          p = m() * p;
-      }
-      rot /= float(rotNum);
-      return rot;
-  }
-
-  void main() {
-      vec2 uv = vUv.xy;
-      vec2 scr = uv * 0.05 - vec2(1.0);
-      
-      float sc = 1.0 / 1.5;
-      vec2 v = vec2(0);
-      for (int level = 0;level < 20; level++)
-      {
-          if ( sc > 0.97 ) break;
-          float ang2 = angRnd * ang() * randS(uv).y;
-          vec2 p = vec2(cos(ang2), sin(ang2));
-          for(int i = 0; i < rotNum; i++)
-          {
-              vec2 p2 = p * sc;
-              float rot = getRot(uv + p2, sc);
-              //v+=cross(vec3(0,0,rot),vec3(p2,0.0)).xy;
-              v += p2.yx * rot * vec2(-1, 1); //maybe faster than above
-              p = m() * p;
-          }
-          sc *= 1.25;
-      }
-      gl_FragColor = texture2D(base, fract(uv + v * 3.0));
-      gl_FragColor.xy += (0.01 * scr.xy / (dot(scr, scr) / 0.1 + 0.3)); 
   }
 """
