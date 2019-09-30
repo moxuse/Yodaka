@@ -7,7 +7,7 @@ module Graphics.Yodaka.Renderable.Plane.Fluid.Frag
 
 import Data.String
 
--- from this blog article https://github.com/jlfwong/blog/blob/master/static/javascripts/fluid-sim.js
+-- from this article http://jamie-wong.com/2016/08/05/webgl-fluid-simulation/
 advectShader :: String
 advectShader = """
   uniform float deltaT;
