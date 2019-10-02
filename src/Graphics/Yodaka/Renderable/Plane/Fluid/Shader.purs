@@ -1,6 +1,8 @@
 module Graphics.Yodaka.Renderable.Plane.Fluid.Shader
 ( advectPlane
 , divergencePlane
+, jacobiPlane
+, subtractGradientPlane
 ) where
 
 import Prelude (bind, discard, (/))
@@ -20,10 +22,10 @@ deltaT :: Number
 deltaT = 1.0 / 120.0
 
 density :: Number
-density = 1.0
+density = 0.25
 
 epsilon :: Number
-epsilon = 320.0
+epsilon = 120.125
 
 advectPlane :: forall t. Texture t => t -> t -> Effect Mesh
 advectPlane input velocity = do

@@ -20,11 +20,12 @@ import Graphics.Yodaka.Port
 import Graphics.Yodaka.Renderable.Torus
 import Graphics.Yodaka.Renderable.Sphere
 import Graphics.Yodaka.Renderable.Plane.Shader
+import Graphics.Yodaka.Renderable.Plane.Fluid.Shader
 import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
-import Graphics.Yodaka.Context (add, renderPP, render, uU, sU)
+import Graphics.Yodaka.Context (add, renderPP, render, uU, sU, uOsc)
 
 main :: Effect Unit
 main = do

@@ -4,6 +4,7 @@ module Graphics.Yodaka.Context
 , render
 , uU
 , sU
+, uOsc
 ) where
 
 import Prelude (Unit, bind, discard, pure, ($))
@@ -43,3 +44,7 @@ uU name target = OP.updateUniform name target
 -- TODO :: need correct type for 'n' that will be used as newValue
 sU :: forall n r. Renderable r => String -> n -> r -> Effect r
 sU name newValue target = OP.setUniform name newValue target
+
+-- set uniform by Osc
+uOsc :: forall r. Renderable r => String -> String -> r -> Effect r
+uOsc addr name target = OP.setUniformByOsc addr name target
