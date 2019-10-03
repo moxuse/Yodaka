@@ -2,7 +2,6 @@ module Graphics.Yodaka.IO.Osc
 ( addListener
 ) where
 
-
 import Prelude (Unit)
 import Effect (Effect)
 import Effect.Uncurried (EffectFn1)
