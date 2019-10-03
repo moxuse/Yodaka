@@ -5,6 +5,7 @@ module Graphics.Yodaka.Renderable.Plane.Shader.Frag
 , clampShader
 , noiseShader
 , rgbNoiseShader
+, stripeShader
 , cGradShader
 , disp2DShader
 , kinderShader
@@ -127,6 +128,19 @@ rgbNoiseShader = """
     vec2 posZ = vec2(st * 12.0 * density) + sin(time * 0.0008) * 4.0;
     color = vec3( noise(posX) + .333, noise(posY) + .333, noise(posZ) + .333 );
     gl_FragColor = vec4(color, 1.0);
+  }
+"""
+
+stripeShader :: String 
+stripeShader = """
+  uniform float width;
+  varying vec2 vUv;
+
+  float pi = 3.1415;
+
+  void main () {
+    
+    gl_FragColor = vec4( vec3( step(0.0, cos( (vUv.x + vUv.y) * width * pi ) )) , 1.0 );
   }
 """
 

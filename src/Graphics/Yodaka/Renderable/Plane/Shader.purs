@@ -5,13 +5,14 @@ module Graphics.Yodaka.Renderable.Plane.Shader
 -- , twoTonePlane
 , clampPlane
 , rgbNoisePlane
+, stripePlane
 , cGradPlane
 , disp2DPlane
 , kinderPlane
 , makePlameMesh
 )  where
 
-import Prelude (bind, discard)
+import Prelude (bind, discard, (*))
 import Effect
 import Data.Symbol (SProxy(..))
 import Graphics.Three.GeometryAddition (createPlaneBufferGeometry)
@@ -82,6 +83,11 @@ rgbNoisePlane = do
   let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
   let u3 = uniformFloat (SProxy :: SProxy "time") 0.0 u2
   makePlameMesh FS.rgbNoiseShader u3
+
+stripePlane :: Effect Mesh
+stripePlane = do
+  let u = uniformFloat (SProxy :: SProxy "width") 8.0 {}
+  makePlameMesh FS.stripeShader u
 
 cGradPlane :: forall t. Texture t => t -> Effect Mesh
 cGradPlane base = do
