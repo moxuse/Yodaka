@@ -2,10 +2,12 @@ module Graphics.Yodaka.RenderTarget
 ( RendererTarget
 , renderTarget
 , getTexture
+, swapTargets
 ) where
 
-import Prelude (Unit, bind, discard, pure)
+import Prelude (Unit, unit, bind, discard, pure)
 import Effect (Effect)
+import Effect.Ref (Ref)
 import Graphics.Three.WebGLRenderTarget as W
 import Graphics.Three.Object3D (class Renderable, Mesh)
 import Graphics.Three.Scene as Scene
@@ -45,4 +47,7 @@ getTexture :: RendererTarget -> Effect TargetTexture
 getTexture (RendererTarget t) = do
   tex <- W.unsafeGetTexture t.target
   pure tex
- 
+
+swapTargets :: forall a b r. { current :: a,  next :: b | r } -> { current :: b,  next :: a }
+swapTargets = \mod ->
+  { next : mod.current, current : mod.next }

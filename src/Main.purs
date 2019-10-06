@@ -1,4 +1,7 @@
  
+  
+  
+
 module Main where
 
 import Prelude
@@ -25,7 +28,7 @@ import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
-import Graphics.Yodaka.Context (add, renderPP, render, uU, sU, uOsc)
+import Graphics.Yodaka.Context (add, renderPP, render, fbRender, uU, sU, uOsc)
 
 main :: Effect Unit
 main = do

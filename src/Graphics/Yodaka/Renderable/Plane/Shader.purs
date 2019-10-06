@@ -66,7 +66,6 @@ clampPlane ::  forall t. Texture t => t -> Effect Mesh
 clampPlane input = do
   let u = uniformSampler2D (SProxy :: SProxy "input") input {}
   makePlameMesh FS.clampShader u
-  
 
 noisePlane :: Effect Mesh
 noisePlane = do

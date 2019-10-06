@@ -3,11 +3,13 @@ module Graphics.Yodaka.Port
 , globalPort
 , addTargetToPort
 , addEffectToPort
+, addOnRenderCallback
 ) where
 
 import Prelude (Unit, discard, bind)
 import Data.Functor (map)
-import Effect
+import Effect (Effect)
+import Effect.Uncurried (EffectFn1)
 import Graphics.Three.Scene as Scene
 import Graphics.Yodaka.RenderTarget as R
 import Graphics.Three.PostProcessing.PostEffect (class PostEffect)
@@ -20,6 +22,7 @@ type Port =
   { scene :: Scene.Scene
   , targets :: Array R.RendererTarget
   , postEffects :: Array (forall e. PostEffect e => { renderToScreen :: Boolean, effect :: e })
+  , onRender :: Array (Effect Unit)
   }
 
 globalPort :: Effect Port
@@ -30,3 +33,6 @@ addTargetToPort = unsafeForeignFunction ["target", ""] "window.port.targets.push
 
 addEffectToPort :: forall e. { renderToScreen :: Boolean | e } -> Effect Unit
 addEffectToPort = unsafeForeignFunction ["target", ""] "window.port.postEffects.push(target)"
+
+addOnRenderCallback :: forall a b. EffectFn1 a b -> Effect Unit
+addOnRenderCallback = unsafeForeignFunction ["callack", ""] "window.port.onRender.push(callack)"
