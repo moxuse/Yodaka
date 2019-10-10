@@ -1,7 +1,3 @@
- 
-  
-  
-
 module Main where
 
 import Prelude
@@ -32,4 +28,4 @@ import Graphics.Yodaka.Context (add, renderPP, render, fbRender, uU, sU, uOsc)
 
 main :: Effect Unit
 main = do
-  log "You Compiled Main module" 
+  log "You Compiled Main module"

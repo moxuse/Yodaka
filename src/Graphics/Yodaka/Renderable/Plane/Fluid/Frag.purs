@@ -11,7 +11,7 @@ import Data.String
 advectShader :: String
 advectShader = """
   uniform float deltaT;
-  uniform sampler2D inputTexture;
+  uniform sampler2D base;
   uniform sampler2D velocity;
   varying vec2 vUv;
 
@@ -19,7 +19,7 @@ advectShader = """
     vec2 u = texture2D(velocity, vUv).xy;
 
     vec2 pastCoord = fract(vUv - (0.5 * deltaT * u));
-    gl_FragColor = texture2D(inputTexture, pastCoord);
+    gl_FragColor = texture2D(base, pastCoord);
   }
 """
 

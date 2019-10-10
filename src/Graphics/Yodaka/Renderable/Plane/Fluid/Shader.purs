@@ -19,18 +19,18 @@ import Graphics.Yodaka.Renderable.Plane.Fluid.Frag as FF
 import Graphics.Yodaka.Renderable.Plane.Shader as S
 
 deltaT :: Number
-deltaT = 1.0 / 120.0
+deltaT = 1.0 / 50.0
 
 density :: Number
-density = 0.25
+density = 0.125
 
 epsilon :: Number
-epsilon = 120.125
+epsilon = 1.5
 
 advectPlane :: forall t. Texture t => t -> t -> Effect Mesh
 advectPlane input velocity = do
   let u = uniformFloat (SProxy :: SProxy "deltaT") deltaT {}
-  let u1 = uniformSampler2D (SProxy :: SProxy "inputTexture") input u
+  let u1 = uniformSampler2D (SProxy :: SProxy "base") input u
   let u2 = uniformSampler2D (SProxy :: SProxy "velocity") velocity u1
   S.makePlameMesh FF.advectShader u2
 

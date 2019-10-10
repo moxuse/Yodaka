@@ -115,4 +115,3 @@ kinderPlane base target = do
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
   makePlameMesh FS.kinderShader u4
-

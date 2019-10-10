@@ -9,7 +9,7 @@ module Graphics.Yodaka.Context
 ) where
 
 import Data.Show (show)
-import Prelude (Unit, unit, bind, discard, pure, void, ($))
+import Prelude (Unit, unit, bind, discard, pure, void, ($), (=<<))
 import Effect (Effect)
 import Effect.Ref as R
 import Effect.Uncurried (EffectFn1, mkEffectFn1)
@@ -38,26 +38,28 @@ render obj = do
   pure tex
 
 -- make feedback render target. swap two targets at each frame
--- under construction..
-fbRender :: forall r t. Renderable r => Texture t => Effect r -> t -> Effect TargetTexture
-fbRender karnel bufferT = do
-  o1 <- karnel
-  o2 <- mapPlane bufferT
-  ct <- RT.renderTarget o1
-  nt <- RT.renderTarget o2
-  paire <- R.new { current : ct, next : nt }
-  P.addOnRenderCallback $ mkEffectFn1 (\_-> swapOnRender paire o2)
-  swaped <- R.read paire
-  nTex <- RT.getTexture swaped.next
-  pure nTex
-  where
-    swapOnRender paire_ targetPlane = do
-      _ <- R.modify RT.swapTargets paire_
-      swaped <- R.read paire_
-      tex <- RT.getTexture swaped.current
-      _ <- OP.setUniform "mapTexture" tex targetPlane
-      pure unit
+fbRender :: forall r. Renderable r => String -> Effect r  -> Effect TargetTexture
+fbRender uniformName obj = do
+  o1 <- obj
+  rt <- RT.renderTarget o1               -- current
+  bt <- RT.bufferTarget (RT.getScene rt) -- next
+  P.addTargetToPort rt
+  P.addTargetToPort bt
+  let cId = RT.getId rt
+  let nId = RT.getId bt
+  let paire = { currentId: cId, nextId: nId }
+  P.addOnRenderCallback $ mkEffectFn1 (\_-> swapOnRender paire o1 uniformName)
+  tCurrent <- RT.getTexture bt
+  pure tCurrent
+    where
+      swapOnRender paire_ targetPlane uniformName_ = do
+        P.swapTargets paire_
+        next <- P.getTargetById paire_.nextId
+        tex <- RT.getTexture next
+        _ <- OP.setUniform uniformName_ tex targetPlane
+        pure unit
 
+-- render post effect
 renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
 renderPP effect renderToScreen = do
   eff <- effect
