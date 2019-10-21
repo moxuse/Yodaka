@@ -2,6 +2,9 @@
 module Main where
 
 import Prelude
+import Math
+import Data.Array
+import Data.Int (toNumber)
 import Effect (Effect)
 import Effect.Console (log)
 import Data.Number.Format (precision, toString, toStringWith)
@@ -30,5 +33,4 @@ import Graphics.Yodaka.Context (add, add', add'', renderPP, render, fbRender, en
 
 main :: Effect Unit
 main = do
-  log "You Compiled Main module" 
-
+  log "You Compiled Main module"   

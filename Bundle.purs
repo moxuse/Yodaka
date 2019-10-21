@@ -1,6 +1,9 @@
 module Main where
 
 import Prelude
+import Math
+import Data.Array
+import Data.Int (toNumber)
 import Effect (Effect)
 import Effect.Console (log)
 import Data.Number.Format (precision, toString, toStringWith)

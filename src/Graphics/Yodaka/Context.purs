@@ -92,7 +92,7 @@ envRender target camera = do
   t_ <- target
   cc <- add'' camera
   P.addOnRenderCallback2 $ mkEffectFn2 (\rendere scene -> CC.updadeCamera cc t_ rendere scene)
-  pure unit  
+  pure unit
 
 -- render post effect
 renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
