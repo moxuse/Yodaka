@@ -30,7 +30,5 @@ import Graphics.Yodaka.Context (add, add', add'', renderPP, render, fbRender, en
 
 main :: Effect Unit
 main = do
-  log "You Compiled Main module"   
-  t <- render =<< uOsc "/f" "foooo" <$> noisePlane
-  add $ torus {map:t}
+  log "You Compiled Main module" 
 
