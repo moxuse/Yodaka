@@ -1,24 +1,30 @@
 module Graphics.Yodaka.Context
 ( add
+, add'
+, add''
 , renderPP
 , render
 , fbRender
+, envSphereCubeCamera
+, envRender
 , uU
 , sU
 , uOsc
 ) where
 
 import Data.Show (show)
-import Prelude (Unit, unit, bind, discard, pure, void, ($), (=<<))
+import Prelude (Unit, unit, bind, discard, pure, void, ($), (<$>), (=<<))
 import Effect (Effect)
 import Effect.Ref as R
-import Effect.Uncurried (EffectFn1, mkEffectFn1)
+import Effect.Uncurried (EffectFn1, mkEffectFn1, mkEffectFn2)
 import Graphics.Three.Object3D (class Renderable, class Object3D, Mesh)
 import Graphics.Three.Scene as Scene
 import Graphics.Three.Texture (class Texture, TargetTexture)
 import Graphics.Three.PostProcessing.PostEffect (class PostEffect)
+import Graphics.Three.CubeCamera as CC
 import Graphics.Yodaka.Port as P
-import Graphics.Yodaka.Renderable.Plane.Shader (mapPlane)
+import Graphics.Yodaka.Renderable.Plane.Shader (mapPlane, twoTonePlane)
+import Graphics.Yodaka.Renderable.Sphere (envSphere)
 import Graphics.Yodaka.PostEffectTarget as PT
 import Graphics.Yodaka.RenderTarget as RT
 import Graphics.Yodaka.IO.Operator as OP
@@ -29,6 +35,19 @@ add obj = do
   o <- obj
   Scene.addObject p.scene o
 
+add' :: forall o. Object3D o => Effect o -> Effect o
+add' obj = do
+  p <- P.globalPort
+  o <- obj
+  Scene.addObject p.scene o
+  pure o
+
+add'' :: forall o. Object3D o => o -> Effect o
+add'' obj = do
+  p <- P.globalPort
+  Scene.addObject p.scene obj
+  pure obj
+
 render :: forall r. Renderable r => Effect r -> Effect TargetTexture
 render obj = do
   o <- obj
@@ -38,7 +57,7 @@ render obj = do
   pure tex
 
 -- make feedback render target. swap two targets at each frame
-fbRender :: forall r. Renderable r => String -> Effect r  -> Effect TargetTexture
+fbRender :: forall r. Renderable r => String -> Effect r -> Effect TargetTexture
 fbRender uniformName obj = do
   o1 <- obj
   rt <- RT.renderTarget o1               -- current
@@ -48,7 +67,7 @@ fbRender uniformName obj = do
   let cId = RT.getId rt
   let nId = RT.getId bt
   let paire = { currentId: cId, nextId: nId }
-  P.addOnRenderCallback $ mkEffectFn1 (\_-> swapOnRender paire o1 uniformName)
+  P.addOnRenderCallback1 $ mkEffectFn1 (\_-> swapOnRender paire o1 uniformName)
   tCurrent <- RT.getTexture bt
   pure tCurrent
     where
@@ -58,6 +77,22 @@ fbRender uniformName obj = do
         tex <- RT.getTexture next
         _ <- OP.setUniform uniformName_ tex targetPlane
         pure unit
+
+-- make enviroment reflection by cube cameta
+envSphereCubeCamera :: Effect CC.CubeCamera
+envSphereCubeCamera = do
+  tone <- render twoTonePlane
+  sp <- envSphere { color: 0xffffff, map: tone, side: 1 }
+  _ <- add'' sp
+  camera <- CC.cubeCamera 0.01 50.0 1024 
+  pure camera
+
+envRender :: forall r. Renderable r => Effect r -> CC.CubeCamera -> Effect Unit
+envRender target camera = do
+  t_ <- target
+  cc <- add'' camera
+  P.addOnRenderCallback2 $ mkEffectFn2 (\rendere scene -> CC.updadeCamera cc t_ rendere scene)
+  pure unit  
 
 -- render post effect
 renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit

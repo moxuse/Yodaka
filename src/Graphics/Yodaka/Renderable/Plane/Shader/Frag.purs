@@ -1,14 +1,13 @@
 module Graphics.Yodaka.Renderable.Plane.Shader.Frag
 ( normalShader 
 , mapShader
--- , twoToneShader
+, twoToneShader
 , clampShader
 , noiseShader
 , rgbNoiseShader
 , stripeShader
 , cGradShader
 , disp2DShader
-, kinderShader
 ) where
 
 import Data.String
@@ -34,21 +33,21 @@ mapShader = """
   }
 """
 
--- twoToneShader :: String
--- twoToneShader = """
---   varying vec2 vUv;
---   uniform vec3 upColor;
---   uniform vec3 bottomColor;
+twoToneShader :: String
+twoToneShader = """
+  varying vec2 vUv;
+  uniform vec3 upColor;
+  uniform vec3 bottomColor;
 
---   void main() {
---     vec3 col = upColor.xyz;
---     if (vUv.y < 0.5) {
---       col = bottomColor.xyz;
---     }
---     gl_FragColor = vec4(col , 1.0);
+  void main() {
+    vec3 col = upColor.xyz;
+    if (vUv.y < 0.45) {
+      col = bottomColor.xyz;
+    }
+    gl_FragColor = vec4(col , 1.0);
     
---   }
--- """
+  }
+"""
 
 clampShader :: String
 clampShader = """
@@ -191,50 +190,5 @@ disp2DShader = """
     vec2 modUv = (vUv) + vec2(modX, modY);
 
     gl_FragColor = texture2D(base, modUv);
-  }
-"""
-
-kinderShader :: String
-kinderShader = """
-  varying vec2 vUv;
-  uniform float time;
-  uniform vec3 resolution;
-  
-  uniform sampler2D base;
-  uniform sampler2D target;
-
-  vec2 hash2( float n ) { return fract(sin(vec2(n,n+1.0))*vec2(43758.5453123,22578.1459123)); }
-
-  vec4 ssamp( vec2 uv, float oct )
-  {
-      return texture( base, uv/oct );
-  }
-
-  vec2 e = vec2(1./2.4, 0.);
-  vec4 dx( vec2 uv, float oct ) { return (ssamp(uv+e.xy,oct) - ssamp(uv-e.xy,oct)) / (2.*e.x); }
-  vec4 dy( vec2 uv, float oct ) { return (ssamp(uv+e.yx,oct) - ssamp(uv-e.yx,oct)) / (2.*e.x); }
-
-
-  void main()
-  {
-    vec2 uv = vUv.xy;
-    vec4 res = vec4(0.);
-    
-    // lookup offset
-    vec2 off = 0.05* (vec2(4.0) / resolution.xy) * sin(time * 0.001);
-    
-    float oct = 4.0;
-    vec2 curl1 = .1*vec2( dy(uv,oct).x, -dx(uv,oct).x )*oct;
-    oct = 64.; float sp = 2.3;
-    curl1 += .5*vec2( dy(uv + sp * sin(time * 0.0001), oct).x, -dx(uv + sp * cos(time * 0.0001), oct).x ) * oct;
-    
-    off += curl1;
-    off *= .25;
-    
-    //off *= .4 + (length(texture(texture, uv).xyz));
-    
-    res += .999 * texture2D( target, uv - off );
-    
-    gl_FragColor = res;
   }
 """

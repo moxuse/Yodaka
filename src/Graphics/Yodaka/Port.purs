@@ -3,7 +3,8 @@ module Graphics.Yodaka.Port
 , globalPort
 , addTargetToPort
 , addEffectToPort
-, addOnRenderCallback
+, addOnRenderCallback1
+, addOnRenderCallback2
 , getTargetById
 , swapTargets
 ) where
@@ -13,7 +14,7 @@ import Data.Eq ((==))
 import Data.Functor (map)
 import Effect.Ref as RE
 import Effect (Effect)
-import Effect.Uncurried (EffectFn1)
+import Effect.Uncurried (EffectFn1, EffectFn2)
 import Graphics.Three.WebGLRenderTarget as W
 import Graphics.Three.Util (ffi, fpi)
 import Graphics.Three.Scene as Scene
@@ -40,8 +41,11 @@ addTargetToPort = unsafeForeignFunction ["target", ""] "window.port.targets.push
 addEffectToPort :: forall e. { renderToScreen :: Boolean | e } -> Effect Unit
 addEffectToPort = unsafeForeignFunction ["target", ""] "window.port.postEffects.push(target)"
 
-addOnRenderCallback :: forall a b. EffectFn1 a b -> Effect Unit
-addOnRenderCallback = unsafeForeignFunction ["callack", ""] "window.port.onRender.push(callack)"
+addOnRenderCallback1 :: forall a b. EffectFn1 a b -> Effect Unit
+addOnRenderCallback1 = unsafeForeignFunction ["callack", ""] "window.port.onRender.push(callack)"
+
+addOnRenderCallback2 :: forall a b c. EffectFn2 a b c -> Effect Unit
+addOnRenderCallback2 = unsafeForeignFunction ["callack", ""] "window.port.onRender.push(callack)"
 
 getTargetById :: String -> Effect R.RendererTarget
 getTargetById id = do

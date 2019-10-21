@@ -15,6 +15,7 @@ import Graphics.Three.Scene as Scene
 import Graphics.Three.Group as Group
 import Graphics.Three.PostProcessing.PostEffect (bloomEffect, noiseEffect, bokehEffect, depthEffect)
 import Graphics.Three.Util (ffi, fpi)
+import Graphics.Three.CubeCamera
 import Graphics.Yodaka.Port
 import Graphics.Yodaka.Renderable.Torus
 import Graphics.Yodaka.Renderable.Sphere
@@ -24,7 +25,7 @@ import Graphics.Yodaka.Renderable.Util
 import Graphics.Yodaka.IO.Timer
 import Graphics.Yodaka.IO.Operator
 import Graphics.Three.WebGLRenderTarget
-import Graphics.Yodaka.Context (add, renderPP, render, fbRender, uU, sU, uOsc)
+import Graphics.Yodaka.Context (add, add', add'', renderPP, render, fbRender, envSphereCubeCamera, envRender, uU, sU, uOsc)
 
 main :: Effect Unit
 main = do

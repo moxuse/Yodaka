@@ -2,13 +2,12 @@ module Graphics.Yodaka.Renderable.Plane.Shader
 ( normalPlane
 , noisePlane
 , mapPlane
--- , twoTonePlane
+, twoTonePlane
 , clampPlane
 , rgbNoisePlane
 , stripePlane
 , cGradPlane
 , disp2DPlane
-, kinderPlane
 , makePlameMesh
 )  where
 
@@ -22,7 +21,7 @@ import Graphics.Three.Texture (class Texture)
 import Graphics.Three.Math.Vector as Vector
 import Graphics.Yodaka.Renderable.Util (uniformInt, uniformVec3, uniformFloat, uniformSampler2D)
 import Graphics.Yodaka.Renderable.Plane.Shader.Vert as VS
-import  Graphics.Yodaka.Renderable.Plane.Shader.Frag as FS
+import Graphics.Yodaka.Renderable.Plane.Shader.Frag as FS
 
 resolution :: Number
 resolution = 1024.0
@@ -55,12 +54,12 @@ mapPlane tex = do
   let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
   makePlameMesh  FS.mapShader u2
 
--- twoTonePlane :: Effect Mesh
--- twoTonePlane = do
---   let u = {}
---   let u1 = uniformVec3 (SProxy :: SProxy "upColor") (Vector.createVec3 1.0 0.3 0.6) u
---   let u2 = uniformVec3 (SProxy :: SProxy "bottomColor") (Vector.createVec3 1.0 1.0 0.8) u1
---   makePlameMesh  FS.twoToneShader u2
+twoTonePlane :: Effect Mesh
+twoTonePlane = do
+  let u = {}
+  let u1 = uniformVec3 (SProxy :: SProxy "upColor") (Vector.createVec3 0.4 0.3 0.6) u
+  let u2 = uniformVec3 (SProxy :: SProxy "bottomColor") (Vector.createVec3 0.0 1.0 0.8) u1
+  makePlameMesh  FS.twoToneShader u2
 
 clampPlane ::  forall t. Texture t => t -> Effect Mesh
 clampPlane input = do
@@ -106,12 +105,3 @@ disp2DPlane base target = do
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
   makePlameMesh FS.disp2DShader u4
-  
-kinderPlane :: forall t. Texture t => t -> t -> Effect Mesh
-kinderPlane base target = do
-  let u = {}
-  let u1 = uniformInt (SProxy :: SProxy "time") 4 u
-  let u2 = resolutionUniform u1
-  let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
-  let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
-  makePlameMesh FS.kinderShader u4
