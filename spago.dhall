@@ -9,6 +9,7 @@ You can edit this file as you like.
     , "arrays"
     , "console"
     , "effect"
+    , "exceptions"
     , "foreign"
     , "identity"
     , "integers"
