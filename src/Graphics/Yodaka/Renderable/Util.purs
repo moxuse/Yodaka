@@ -29,19 +29,19 @@ type UniformValueVector3 =
 type UniformValueSampler2D =
   forall t. Texture t => { value :: t }
 
-uniformInt name value_ rec = build (insert name uniformValue) rec
+uniformInt name v rec = build (insert name uniformValue) rec
   where
     uniformValue :: UniformValueInt
-    uniformValue = { value : value_ }
+    uniformValue = { value : v }
 
-uniformFloat name value_ rec = build (insert name uniformValue) rec
+uniformFloat name v rec = build (insert name uniformValue) rec
   where
     uniformValue :: UniformValueFloat
-    uniformValue = { value : value_ }
+    uniformValue = { value : v }
 
-uniformVec3 name value_ rec = build (insert name uniformValue) rec
+uniformVec3 name v rec = build (insert name uniformValue) rec
   where
     uniformValue :: UniformValueVector3
-    uniformValue = { value : value_ }
+    uniformValue = { value : v }
 
-uniformSampler2D name value_ rec = build (insert name { value : value_ }) rec
+uniformSampler2D name v rec = build (insert name { value : v }) rec

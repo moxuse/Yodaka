@@ -2,7 +2,7 @@ module Graphics.Yodaka.IO.Operator
 ( setPos
 , setRot
 , update
-, updateUniform
+, updateByElapse
 , setUniform
 , setUniformByOsc
 , applyOperator
@@ -50,8 +50,13 @@ validateUniform target name onValid = do
       _ <- onValid
       pure target
 
-updateUniform :: forall r. Renderable r => String -> r -> Effect r
-updateUniform name target = do
+-- updateUniform :: forall r. Renderable r => (a -> Number -> Effect a) -> String -> r -> Effect r
+-- updateUniform func name target = do
+--   let onValid = createTimer $ mkEffectFn1 (\elapse -> func target name elapse)
+--   validateUniform target name onValid
+
+updateByElapse :: forall r. Renderable r => String -> r -> Effect r
+updateByElapse name target = do
   let onValid = createTimer $ mkEffectFn1 (\elapse -> setUniform name elapse target)
   validateUniform target name onValid
 
@@ -67,8 +72,7 @@ setUniformByOsc addr name target = do
   let onValid = addListener addr (mkEffectFn1 (\msg -> setUniform name msg target))
   validateUniform target name onValid
 
-
--- short hands
+-- oprators and shorthand
 applyOperator x y = y <$> x
 
 infixr 1 applyOperator as |>

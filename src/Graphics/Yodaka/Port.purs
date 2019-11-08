@@ -69,6 +69,6 @@ swapTargets paire = do
   index2 <- getTargetIndexById t2
   temp <- RE.new t1Target
   _ <- setTarget index1 t2Target
-  temp_ <- RE.read temp
-  _ <- setTarget index2 temp_
+  temp2 <- RE.read temp
+  _ <- setTarget index2 temp2
   pure unit

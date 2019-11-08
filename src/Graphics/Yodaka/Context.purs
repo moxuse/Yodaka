@@ -2,12 +2,12 @@ module Graphics.Yodaka.Context
 ( add
 , add'
 , add''
-, renderPP
+, renderPE
 , render
 , fbRender
 , envSphereCubeCamera
 , envRender
-, uU
+, uE
 , sU
 , uOsc
 ) where
@@ -71,14 +71,14 @@ fbRender uniformName obj = do
   tCurrent <- RT.getTexture bt
   pure tCurrent
     where
-      swapOnRender paire_ targetPlane uniformName_ = do
-        P.swapTargets paire_
-        next <- P.getTargetById paire_.nextId
+      swapOnRender p targetPlane uName = do
+        P.swapTargets p
+        next <- P.getTargetById p.nextId
         tex <- RT.getTexture next
-        _ <- OP.setUniform uniformName_ tex targetPlane
+        _ <- OP.setUniform uName tex targetPlane
         pure unit
 
--- make enviroment reflection by cube cameta
+-- make enviroment reflection by cube camera
 envSphereCubeCamera :: Effect CC.CubeCamera
 envSphereCubeCamera = do
   tone <- render twoTonePlane
@@ -89,19 +89,22 @@ envSphereCubeCamera = do
 
 envRender :: forall r. Renderable r => Effect r -> CC.CubeCamera -> Effect Unit
 envRender target camera = do
-  t_ <- target
+  t <- target
   cc <- add'' camera
-  P.addOnRenderCallback2 $ mkEffectFn2 (\rendere scene -> CC.updadeCamera cc t_ rendere scene)
+  P.addOnRenderCallback2 $ mkEffectFn2 (\rendere scene -> CC.updadeCamera cc t rendere scene)
   pure unit
 
 -- render post effect
-renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
-renderPP effect renderToScreen = do
+renderPE :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
+renderPE effect renderToScreen = do
   eff <- effect
   P.addEffectToPort $ PT.createPETarget eff renderToScreen
 
-uU :: forall r. Renderable r => String -> r -> Effect r
-uU name target = OP.updateUniform name target
+-- uU :: forall r. Renderable r => String -> r -> Effect r
+-- uU name target = OP.updateUniform name target
+
+uE :: forall r. Renderable r => String -> r -> Effect r
+uE name target = OP.updateByElapse name target
 
 -- TODO :: need correct type for 'n' that will be used as newValue
 sU :: forall n r. Renderable r => String -> n -> r -> Effect r

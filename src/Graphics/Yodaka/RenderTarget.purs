@@ -53,7 +53,7 @@ getTarget :: RendererTarget -> W.WebGLRenderTarget
 getTarget (RendererTarget renderTarget) = renderTarget.target
 
 createRenderTarget :: String -> W.WebGLRenderTarget -> Scene.Scene -> RendererTarget
-createRenderTarget id t s = RendererTarget { id: id, target : t, scene : s, skip : false }
+createRenderTarget id t s = RendererTarget { id : id, target : t, scene : s, skip : false }
 
 createWebRenderTarget :: forall opt. { | opt } -> Effect W.WebGLRenderTarget
 createWebRenderTarget opt = do
@@ -70,7 +70,7 @@ getTexture (RendererTarget t) = do
   pure tex
 
 setSkip :: Boolean -> RendererTarget -> RendererTarget 
-setSkip skip_ (RendererTarget target) = RendererTarget target { skip = skip_ }
+setSkip sk (RendererTarget target) = RendererTarget target { skip = sk }
 
 createHash :: Effect String
 createHash = ffi [""] "require('crypto').createHash('md5').update(Math.random() + '').digest('hex');"
