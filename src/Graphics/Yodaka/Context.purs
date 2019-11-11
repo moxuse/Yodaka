@@ -2,7 +2,7 @@ module Graphics.Yodaka.Context
 ( add
 , add'
 , add''
-, renderPP
+, renderPE
 , render
 , fbRender
 , envSphereCubeCamera
@@ -95,8 +95,8 @@ envRender target camera = do
   pure unit
 
 -- render post effect
-renderPP :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
-renderPP effect renderToScreen = do
+renderPE :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
+renderPE effect renderToScreen = do
   eff <- effect
   P.addEffectToPort $ PT.createPETarget eff renderToScreen
 
