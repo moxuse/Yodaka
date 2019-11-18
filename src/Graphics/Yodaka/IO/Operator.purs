@@ -10,6 +10,10 @@ module Graphics.Yodaka.IO.Operator
 , (|>)
 , combineOperators
 , (|+)
+, uU
+, uUE
+, sU
+, uOsc
 ) where
 
 import Prelude (Unit, pure, bind, flip, (<$>), (<*>), (>=>), (<), ($), (<>), discard)
@@ -82,3 +86,18 @@ infixr 1 applyOperator as |>
 combineOperators x y = (>=>) x y
 
 infixr 1 combineOperators as |+
+
+-- shorthand
+uU :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
+uU name func target = updateUniform name func target
+
+uUE :: forall r. Renderable r => String -> r -> Effect r
+uUE name target = updateUniformByElapse name target
+
+-- TODO :: need correct type for 'n' that will be used as newValue
+sU :: forall n r. Renderable r => String -> n -> r -> Effect r
+sU name newValue target = setUniform name newValue target
+
+-- set uniform by Osc
+uOsc :: forall r. Renderable r => String -> String -> r -> Effect r
+uOsc addr name target = setUniformByOsc addr name target

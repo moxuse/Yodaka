@@ -7,10 +7,6 @@ module Graphics.Yodaka.Context
 , fbRender
 , envSphereCubeCamera
 , envRender
-, uU
-, uUE
-, sU
-, uOsc
 ) where
 
 import Data.Show (show)
@@ -100,17 +96,3 @@ renderPE :: forall e. PostEffect e => Boolean -> Effect e -> Effect Unit
 renderPE renderToScreen effect = do
   eff <- effect
   P.addEffectToPort $ PT.createPETarget eff renderToScreen
-
-uU :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
-uU name func target = OP.updateUniform name func target
-
-uUE :: forall r. Renderable r => String -> r -> Effect r
-uUE name target = OP.updateUniformByElapse name target
-
--- TODO :: need correct type for 'n' that will be used as newValue
-sU :: forall n r. Renderable r => String -> n -> r -> Effect r
-sU name newValue target = OP.setUniform name newValue target
-
--- set uniform by Osc
-uOsc :: forall r. Renderable r => String -> String -> r -> Effect r
-uOsc addr name target = OP.setUniformByOsc addr name target
