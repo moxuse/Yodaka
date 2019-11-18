@@ -96,8 +96,8 @@ envRender target camera = do
   pure unit
 
 -- render post effect
-renderPE :: forall e. PostEffect e => Effect e -> Boolean -> Effect Unit
-renderPE effect renderToScreen = do
+renderPE :: forall e. PostEffect e => Boolean -> Effect e -> Effect Unit
+renderPE renderToScreen effect = do
   eff <- effect
   P.addEffectToPort $ PT.createPETarget eff renderToScreen
 
