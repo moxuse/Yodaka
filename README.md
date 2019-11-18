@@ -61,10 +61,10 @@ Takes uniform's value name newValue and `Renderable` instance. Set uniform of ma
 #### uniformUpdate
 
 ``` purescript
-uniformUpdate :: forall r. Renderable r => String -> r -> Effect r
+updateUniform :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
 ```
 
-Takes uniform's value name and `Renderable` instance. Updating shader uniform of material of Rendarable.
+Takes uniform's value name, updater funtion and `Renderable` instance. Updating shader uniform of material of Rendarable.
 once it added, timer will apply for to update uniform's value each frame. `uU` is syntax-sugar of this function.
 
 [Source](https://github.com/moxuse/Yodaka/blob/603e99ae43b1c77072c39c0024a787fb0796a078/src/Graphics/Yodaka/IO/Operator.purs#L14)
