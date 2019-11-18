@@ -34,7 +34,7 @@ bloomEffect :: Effect Bloom
 bloomEffect = ffi [ "" ] "new THREE.BloomEffect({ luminanceThreshold: 0.5 })"
 
 bloomEffect' :: forall opt. { | opt } -> Effect Bloom
-bloomEffect' = ffi [ "optiorn", "" ] "new THREE.BloomEffect(option)"
+bloomEffect' = ffi [ "option", "" ] "new THREE.BloomEffect(option)"
 
 noiseEffect :: Effect Noise
 noiseEffect = ffi [ "" ] "new THREE.NoiseEffect()"
