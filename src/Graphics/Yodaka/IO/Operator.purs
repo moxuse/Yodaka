@@ -3,12 +3,13 @@ module Graphics.Yodaka.IO.Operator
 , setRot
 , update
 , updateUniform
+, updateUniformByElapse
 , setUniform
 , setUniformByOsc
 , applyOperator
 , (|>)
 , combineOperators
-, (|+|)
+, (|+)
 ) where
 
 import Prelude (Unit, pure, bind, flip, (<$>), (<*>), (>=>), (<), ($), (<>), discard)
@@ -34,9 +35,9 @@ setRot x y z target = do
   setRotationEuler target x y x
   pure target
 
-update :: forall a c. Object3D a => (a -> Number -> Effect a) -> a -> Effect a
+update :: forall o a b. Object3D o => (a -> o -> Effect b) -> o -> Effect o
 update func target = do
-  _ <- createTimer $ mkEffectFn1 (\elapse -> (func target elapse))
+  _ <- createTimer $ mkEffectFn1 (\elapse -> (func elapse) target)
   pure target
 
 validateUniform :: forall r. Renderable r =>  r -> String -> (Effect Unit) -> Effect r
@@ -50,8 +51,13 @@ validateUniform target name onValid = do
       _ <- onValid
       pure target
 
-updateUniform :: forall r. Renderable r => String -> r -> Effect r
-updateUniform name target = do
+updateUniform :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
+updateUniform name func target = do
+  let onValid = createTimer $ mkEffectFn1 (\elapse -> setUniform name (func elapse) target)
+  validateUniform target name onValid
+
+updateUniformByElapse :: forall r. Renderable r => String -> r -> Effect r
+updateUniformByElapse name target = do
   let onValid = createTimer $ mkEffectFn1 (\elapse -> setUniform name elapse target)
   validateUniform target name onValid
 
@@ -68,11 +74,11 @@ setUniformByOsc addr name target = do
   validateUniform target name onValid
 
 
--- short hands
+-- operators
 applyOperator x y = y <$> x
 
 infixr 1 applyOperator as |>
 
 combineOperators x y = (>=>) x y
 
-infixr 1 combineOperators as |+|
+infixr 1 combineOperators as |+

@@ -8,6 +8,7 @@ module Graphics.Yodaka.Context
 , envSphereCubeCamera
 , envRender
 , uU
+, uUE
 , sU
 , uOsc
 ) where
@@ -100,8 +101,11 @@ renderPE effect renderToScreen = do
   eff <- effect
   P.addEffectToPort $ PT.createPETarget eff renderToScreen
 
-uU :: forall r. Renderable r => String -> r -> Effect r
-uU name target = OP.updateUniform name target
+uU :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
+uU name func target = OP.updateUniform name func target
+
+uUE :: forall r. Renderable r => String -> r -> Effect r
+uUE name target = OP.updateUniformByElapse name target
 
 -- TODO :: need correct type for 'n' that will be used as newValue
 sU :: forall n r. Renderable r => String -> n -> r -> Effect r
