@@ -16,7 +16,7 @@ module Graphics.Yodaka.IO.Operator
 , uOsc
 ) where
 
-import Prelude (Unit, pure, bind, flip, (<$>), (<*>), (>=>), (<), ($), (<>), discard)
+import Prelude (Unit, pure, bind, flip, (*), (<$>), (<*>), (>=>), (<), ($), (<>), discard)
 import Effect (Effect)
 import Effect.Exception (Error, throwException, error)
 import Data.Either (Either (..))
@@ -55,7 +55,7 @@ validateUniform target name onValid = do
       _ <- onValid
       pure target
 
-updateUniform :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
+updateUniform :: forall r a. Renderable r => String -> (a -> a) -> r -> Effect r
 updateUniform name func target = do
   let onValid = createTimer $ mkEffectFn1 (\elapse -> setUniform name (func elapse) target)
   validateUniform target name onValid
@@ -77,7 +77,6 @@ setUniformByOsc addr name target = do
   let onValid = addListener addr (mkEffectFn1 (\msg -> setUniform name msg target))
   validateUniform target name onValid
 
-
 -- operators
 applyOperator x y = y <$> x
 
@@ -88,7 +87,7 @@ combineOperators x y = (>=>) x y
 infixr 1 combineOperators as |+
 
 -- shorthand
-uU :: forall a r. Renderable r => String -> (a -> Effect a) -> r -> Effect r
+uU :: forall r a. Renderable r => String -> (a -> a) -> r -> Effect r
 uU name func target = updateUniform name func target
 
 uUE :: forall r. Renderable r => String -> r -> Effect r

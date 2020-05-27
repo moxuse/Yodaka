@@ -34,5 +34,5 @@ import Graphics.Yodaka.Context (add, add', add'', renderPE, render, fbRender, en
 main :: Effect Unit
 main = do
   log "You Compiled Main module"   
-  add =<< noisePlane |> uOsc "/x" "density"
+  add $ noisePlane
 
