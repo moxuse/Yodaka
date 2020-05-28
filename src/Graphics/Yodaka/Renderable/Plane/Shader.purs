@@ -2,12 +2,15 @@ module Graphics.Yodaka.Renderable.Plane.Shader
 ( normalPlane
 , noisePlane
 , mapPlane
+, grayTestPlane
+, alphaMaskPlane
 , twoTonePlane
 , clampPlane
 , rgbNoisePlane
 , stripePlane
 , cGradPlane
 , disp2DPlane
+, voronoiPlane
 , makePlameMesh
 )  where
 
@@ -53,6 +56,21 @@ mapPlane tex = do
   let u1 = resolutionUniform u
   let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
   makePlameMesh  FS.mapShader u2
+
+grayTestPlane :: forall t. Texture t => t -> t -> Effect Mesh
+grayTestPlane base target = do
+  let u = {}
+  let u1 = uniformFloat (SProxy :: SProxy "threshold") 0.5 u
+  let u2 = uniformSampler2D (SProxy :: SProxy "base") base u1
+  let u3 = uniformSampler2D (SProxy :: SProxy "target") target u2
+  makePlameMesh  FS.grayTestShader u3
+
+alphaMaskPlane :: forall t. Texture t => t -> t -> Effect Mesh
+alphaMaskPlane base target = do
+  let u = {}
+  let u1 = uniformSampler2D (SProxy :: SProxy "base") base u
+  let u2 = uniformSampler2D (SProxy :: SProxy "target") target u1
+  makePlameMesh  FS.alphaMaskShader u2
 
 twoTonePlane :: Effect Mesh
 twoTonePlane = do
@@ -105,3 +123,12 @@ disp2DPlane base target = do
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
   makePlameMesh FS.disp2DShader u4
+
+voronoiPlane :: forall t. Texture t => t -> Effect Mesh
+voronoiPlane base = do
+  let u = {}
+  let u1 = resolutionUniform u
+  let u2 = uniformSampler2D (SProxy :: SProxy "base") base u1
+  let u3 = uniformFloat(SProxy :: SProxy "scale") 5.0 u2
+  let u4 = uniformFloat(SProxy :: SProxy "time") 0.0 u3
+  makePlameMesh FS.voronoiShader u4

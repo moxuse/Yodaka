@@ -1,6 +1,8 @@
 module Graphics.Yodaka.Renderable.Plane.Shader.Frag
 ( normalShader 
 , mapShader
+, grayTestShader
+, alphaMaskShader
 , twoToneShader
 , clampShader
 , noiseShader
@@ -8,6 +10,7 @@ module Graphics.Yodaka.Renderable.Plane.Shader.Frag
 , stripeShader
 , cGradShader
 , disp2DShader
+, voronoiShader
 ) where
 
 import Data.String
@@ -30,6 +33,46 @@ mapShader = """
 
   void main() {
     gl_FragColor = texture2D(mapTexture , vUv);
+  }
+"""
+
+grayTestShader :: String
+grayTestShader = """
+  varying vec2 vUv;
+  uniform float threshold;
+  uniform sampler2D base;
+  uniform sampler2D target;
+
+  const float redScale   = 0.298912;
+  const float greenScale = 0.586611;
+  const float blueScale  = 0.114478;
+  const vec3  grayScale = vec3(redScale, greenScale, blueScale);
+
+  void main() {
+    vec4 cBase = texture2D(base , vUv);
+    vec4 cTarget = texture2D(target , vUv);
+    if (dot(cBase.rgb, grayScale) < threshold) {
+      cTarget.a = 0.0;
+    }
+    gl_FragColor = cTarget;
+  }
+"""
+
+alphaMaskShader ::  String
+alphaMaskShader = """
+  varying vec2 vUv;
+  uniform sampler2D base;
+  uniform sampler2D target;
+
+  const float redScale   = 0.298912;
+  const float greenScale = 0.586611;
+  const float blueScale  = 0.114478;
+  const vec3  grayScale = vec3(redScale, greenScale, blueScale);
+
+  void main() {
+    vec4 cBase = texture2D(base , vUv);
+    vec4 cTarget = texture2D(target , vUv);
+    gl_FragColor = vec4(cTarget.rgb, dot(cBase.rgb, grayScale));
   }
 """
 
@@ -190,5 +233,55 @@ disp2DShader = """
     vec2 modUv = (vUv) + vec2(modX, modY);
 
     gl_FragColor = texture2D(base, modUv);
+  }
+"""
+
+-- from: https://thebookofshaders.com/edit.php#12/vorono-01.frag
+voronoiShader :: String
+voronoiShader = """
+  uniform vec3 resolution;
+  uniform sampler2D base;
+  uniform float time;
+  uniform float scale;
+
+  varying vec2 vUv;
+
+  vec2 random2( vec2 p ) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+  }
+
+  void main() {
+    vec2 st = gl_FragCoord.xy / resolution.xy;
+    st.x *= resolution.x / resolution.y;
+    vec3 color = vec3(.0);
+
+    // Scale
+    st *= scale;
+
+    // Tile the space
+    vec2 i_st = floor(st);
+    vec2 f_st = fract(st);
+
+    float m_dist = 10.0;  // minimum distance
+    vec2 m_point;        // minimum point
+    
+    for (int j=-1; j<=1; j++ ) {
+      for (int i=-1; i<=1; i++ ) {
+        vec2 neighbor = vec2(float(i),float(j));
+        vec2 point = random2(i_st + neighbor);
+        point = 0.5 + 0.5*sin(time * 0.0005 + 6.2831*point);
+        vec2 diff = neighbor + point - f_st;
+        float dist = length(diff);
+
+        if( dist < m_dist ) {
+            m_dist = dist;
+            m_point = point;
+        }
+      }
+    }
+    // color += dot(m_point, vec2(0.9, 0.9));
+    color = texture2D(base, m_point).rgb;
+    
+    gl_FragColor = vec4(color, 1.0);
   }
 """
