@@ -72,5 +72,6 @@ getTexture (RendererTarget t) = do
 setSkip :: Boolean -> RendererTarget -> RendererTarget 
 setSkip skip_ (RendererTarget target) = RendererTarget target { skip = skip_ }
 
+-- TODO : should separate port 
 createHash :: Effect String
-createHash = ffi [""] "require('crypto').createHash('md5').update(Math.random() + '').digest('hex');"
+createHash = ffi [""] "port.crypto.createHash('md5').update(Math.random() + '').digest('hex');"
