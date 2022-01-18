@@ -11,7 +11,7 @@ module Graphics.Yodaka.Renderable.Plane.Shader
 , cGradPlane
 , disp2DPlane
 , voronoiPlane
-, makePlameMesh
+, makePlaneMesh
 )  where
 
 import Prelude (bind, discard, (*))
@@ -35,7 +35,7 @@ planeSize = 2.0
 planeSegmentNum :: Int
 planeSegmentNum = 1
 
-makePlameMesh frag u = do
+makePlaneMesh frag u = do
   g <- createPlaneBufferGeometry planeSize planeSize planeSegmentNum planeSegmentNum
   m <- createShader
     { uniforms : u
@@ -48,14 +48,14 @@ resolutionUniform rec = uniformVec3 (SProxy :: SProxy "resolution") (Vector.crea
 normalPlane :: Effect Mesh
 normalPlane = do
   let u = resolutionUniform {}
-  makePlameMesh FS.normalShader u
+  makePlaneMesh FS.normalShader u
 
 mapPlane :: forall t. Texture t => t -> Effect Mesh
 mapPlane tex = do
   let u = {}
   let u1 = resolutionUniform u
   let u2 = uniformSampler2D (SProxy :: SProxy "mapTexture") tex u1
-  makePlameMesh  FS.mapShader u2
+  makePlaneMesh  FS.mapShader u2
 
 grayTestPlane :: forall t. Texture t => t -> t -> Effect Mesh
 grayTestPlane base target = do
@@ -63,26 +63,26 @@ grayTestPlane base target = do
   let u1 = uniformFloat (SProxy :: SProxy "threshold") 0.5 u
   let u2 = uniformSampler2D (SProxy :: SProxy "base") base u1
   let u3 = uniformSampler2D (SProxy :: SProxy "target") target u2
-  makePlameMesh  FS.grayTestShader u3
+  makePlaneMesh  FS.grayTestShader u3
 
 alphaMaskPlane :: forall t. Texture t => t -> t -> Effect Mesh
 alphaMaskPlane base target = do
   let u = {}
   let u1 = uniformSampler2D (SProxy :: SProxy "base") base u
   let u2 = uniformSampler2D (SProxy :: SProxy "target") target u1
-  makePlameMesh  FS.alphaMaskShader u2
+  makePlaneMesh  FS.alphaMaskShader u2
 
 twoTonePlane :: Effect Mesh
 twoTonePlane = do
   let u = {}
   let u1 = uniformVec3 (SProxy :: SProxy "upColor") (Vector.createVec3 0.4 0.3 0.6) u
   let u2 = uniformVec3 (SProxy :: SProxy "bottomColor") (Vector.createVec3 0.0 1.0 0.8) u1
-  makePlameMesh  FS.twoToneShader u2
+  makePlaneMesh  FS.twoToneShader u2
 
 clampPlane ::  forall t. Texture t => t -> Effect Mesh
 clampPlane input = do
   let u = uniformSampler2D (SProxy :: SProxy "input") input {}
-  makePlameMesh FS.clampShader u
+  makePlaneMesh FS.clampShader u
 
 noisePlane :: Effect Mesh
 noisePlane = do
@@ -90,7 +90,7 @@ noisePlane = do
   let u1 = resolutionUniform u
   let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
   let u3 = uniformFloat (SProxy :: SProxy "time") 0.0 u2
-  makePlameMesh FS.noiseShader u3
+  makePlaneMesh FS.noiseShader u3
 
 rgbNoisePlane :: Effect Mesh
 rgbNoisePlane = do
@@ -98,12 +98,12 @@ rgbNoisePlane = do
   let u1 = resolutionUniform u
   let u2 = uniformFloat (SProxy :: SProxy "density") 1.0 u1
   let u3 = uniformFloat (SProxy :: SProxy "time") 0.0 u2
-  makePlameMesh FS.rgbNoiseShader u3
+  makePlaneMesh FS.rgbNoiseShader u3
 
 stripePlane :: Effect Mesh
 stripePlane = do
   let u = uniformFloat (SProxy :: SProxy "width") 8.0 {}
-  makePlameMesh FS.stripeShader u
+  makePlaneMesh FS.stripeShader u
 
 cGradPlane :: forall t. Texture t => t -> Effect Mesh
 cGradPlane base = do
@@ -113,7 +113,7 @@ cGradPlane base = do
   let u3 = uniformVec3 (SProxy :: SProxy "ampColor") (Vector.createVec3 0.8 0.25 1.1) u2
   let u4 = uniformVec3 (SProxy :: SProxy "freqColor") (Vector.createVec3 0.9 1.25 0.9) u3
   let u5 = uniformFloat(SProxy :: SProxy "phase") 0.0 u4
-  makePlameMesh FS.cGradShader u5
+  makePlaneMesh FS.cGradShader u5
 
 disp2DPlane :: forall t. Texture t => t -> t -> Effect Mesh
 disp2DPlane base target = do
@@ -122,7 +122,7 @@ disp2DPlane base target = do
   let u2 = uniformFloat(SProxy :: SProxy "intensity") 0.125 u1
   let u3 = uniformSampler2D (SProxy :: SProxy "base") base u2
   let u4 = uniformSampler2D (SProxy :: SProxy "target") target u3
-  makePlameMesh FS.disp2DShader u4
+  makePlaneMesh FS.disp2DShader u4
 
 voronoiPlane :: forall t. Texture t => t -> Effect Mesh
 voronoiPlane base = do
@@ -131,4 +131,4 @@ voronoiPlane base = do
   let u2 = uniformSampler2D (SProxy :: SProxy "base") base u1
   let u3 = uniformFloat(SProxy :: SProxy "scale") 5.0 u2
   let u4 = uniformFloat(SProxy :: SProxy "time") 0.0 u3
-  makePlameMesh FS.voronoiShader u4
+  makePlaneMesh FS.voronoiShader u4

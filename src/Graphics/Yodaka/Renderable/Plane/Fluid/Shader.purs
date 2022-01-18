@@ -32,7 +32,7 @@ advectPlane input velocity = do
   let u = uniformFloat (SProxy :: SProxy "deltaT") deltaT {}
   let u1 = uniformSampler2D (SProxy :: SProxy "base") input u
   let u2 = uniformSampler2D (SProxy :: SProxy "velocity") velocity u1
-  S.makePlameMesh FF.advectShader u2
+  S.makePlaneMesh FF.advectShader u2
 
 divergencePlane :: forall t. Texture t => t -> Effect Mesh
 divergencePlane velocity = do
@@ -40,14 +40,14 @@ divergencePlane velocity = do
   let u1 = uniformFloat (SProxy :: SProxy "rho") density u
   let u2 = uniformFloat (SProxy :: SProxy "epsilon") epsilon u1
   let u3 = uniformSampler2D (SProxy :: SProxy "velocity") velocity u2
-  S.makePlameMesh FF.divergenceShader u3
+  S.makePlaneMesh FF.divergenceShader u3
 
 jacobiPlane :: forall t. Texture t => t -> t -> Effect Mesh
 jacobiPlane divergence pressure = do
   let u = uniformFloat (SProxy :: SProxy "epsilon") epsilon {}
   let u1 = uniformSampler2D (SProxy :: SProxy "divergence") divergence u
   let u2 = uniformSampler2D (SProxy :: SProxy "pressure") pressure u1
-  S.makePlameMesh FF.jacobiShader u2
+  S.makePlaneMesh FF.jacobiShader u2
 
 subtractGradientPlane :: forall t. Texture t => t -> t -> Effect Mesh
 subtractGradientPlane velocity pressure = do
@@ -56,4 +56,4 @@ subtractGradientPlane velocity pressure = do
   let u2 = uniformFloat (SProxy :: SProxy "epsilon") epsilon u1
   let u3 = uniformSampler2D (SProxy :: SProxy "velocity") velocity u2
   let u4 = uniformSampler2D (SProxy :: SProxy "pressure") pressure u3
-  S.makePlameMesh FF.subtractGradientShader u3
+  S.makePlaneMesh FF.subtractGradientShader u3
